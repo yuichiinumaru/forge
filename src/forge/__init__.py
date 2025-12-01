@@ -385,8 +385,8 @@ class BannerGroup(TyperGroup):
 
 
 app = typer.Typer(
-    name="specify",
-    help="Setup tool for Specify spec-driven development projects",
+    name="forge",
+    help="Setup tool for Forge spec-driven development projects",
     add_completion=False,
     invoke_without_command=True,
     cls=BannerGroup,
@@ -522,7 +522,7 @@ def init_git_repo(
         subprocess.run(["git", "init"], check=True, capture_output=True, text=True)
         subprocess.run(["git", "add", "."], check=True, capture_output=True, text=True)
         subprocess.run(
-            ["git", "commit", "-m", "Initial commit from Specify template"],
+            ["git", "commit", "-m", "Initial commit from Forge template"],
             check=True,
             capture_output=True,
             text=True,
@@ -958,10 +958,10 @@ def download_and_extract_template(
 def ensure_executable_scripts(
     project_path: Path, tracker: StepTracker | None = None
 ) -> None:
-    """Ensure POSIX .sh scripts under .specify/scripts (recursively) have execute bits (no-op on Windows)."""
+    """Ensure POSIX .sh scripts under .forge/scripts (recursively) have execute bits (no-op on Windows)."""
     if os.name == "nt":
         return  # Windows: skip silently
-    scripts_root = project_path / ".specify" / "scripts"
+    scripts_root = project_path / ".forge" / "scripts"
     if not scripts_root.is_dir():
         return
     failures: list[str] = []
@@ -1212,7 +1212,7 @@ def init(
 
     tracker = StepTracker("Initialize Forge Project")
 
-    sys._specify_tracker_active = True
+    sys._forge_tracker_active = True
 
     tracker.add("precheck", "Check required tools")
     tracker.complete("precheck", "ok")

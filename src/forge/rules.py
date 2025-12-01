@@ -5,6 +5,24 @@ import typer
 
 app = typer.Typer()
 
+def get_rules_dir() -> Path:
+    """Resolve the rules directory (Project .forge or Repo source)."""
+    # 1. Deployed project structure (created by forge init)
+    project_rules = Path.cwd() / ".forge" / "templates" / "rules"
+    if project_rules.exists():
+        return project_rules
+
+    # 2. Dev / Repo structure (fallback)
+    repo_rules = Path(__file__).parent.parent.parent / "templates" / "rules"
+    if repo_rules.exists():
+        return repo_rules
+
+    raise FileNotFoundError("Could not find templates/rules directory.")
+
+def load_rule_block(category: str, name: str) -> str:
+    """Load a specific rule block from templates."""
+    rules_dir = get_rules_dir()
+    path = rules_dir / category / f"{name}.md"
 RULES_DIR = Path(__file__).parent.parent.parent / "templates" / "rules"
 
 def load_rule_block(category: str, name: str) -> str:
