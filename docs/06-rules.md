@@ -5,27 +5,35 @@
 
 ## 1. The 9 Immutable Articles (from Constitution)
 
-1. **Library-First Principle**: Every feature must begin as a standalone library.
-2. **CLI Interface Mandate**: Every library must expose functionality via CLI (stdin/stdout/JSON).
-3. **Test-First Imperative**: NON-NEGOTIABLE. Red -> Green -> Refactor.
-4. **Simplicity**: Minimal structure (max 3 projects initially).
-5. **Anti-Abstraction**: Use framework features directly.
-6. **Integration-First Testing**: Prefer real envs over mocks.
-7. **Documentation-Driven**: `docs/01-plan.md` is the source of truth.
-8. **Task Atomicity**: Do not multitask.
-9. **Institutional Memory**: Always update the Changelog.
+1. **Library-First**: Every feature must begin as a standalone library/module.
+2. **CLI Interface**: Every library must be usable via CLI/API.
+3. **Test-First (TDD)**: No implementation without a failing test (Red -> Green -> Refactor).
+4. **Simplicity**: Maximize leverage of existing framework features; avoid over-abstraction.
+5. **Integration-First**: Prioritize realistic integration tests over extensive mocking.
+6. **Documentation-Driven (RDD)**: Documentation (`docs/01-plan.md`) is the source of truth, not the code.
+7. **Domain Isolation (DDD)**: Respect domain boundaries defined in `docs/03-architecture.md`.
+8. **Task Atomicity**: Work on one task from `docs/02-tasks.md` at a time.
+9. **Institutional Memory**: Log significant architectural decisions and mistakes in `docs/04-changelog.md`.
 
 ## 2. Coding Standards
 
-### Python
-- **Type Hinting**: Required for all function signatures.
+### Python (`src/forge`)
+- **Framework**: `typer` for CLI, `rich` for output.
+- **Type Hinting**: Mandatory for all function signatures.
 - **Docstrings**: Google Style.
 - **Formatter**: Black / Ruff.
+- **Imports**: Absolute imports preferred (e.g., `from forge.utils import ...`).
 
-### Markdown
+### Markdown (`docs/` & `templates/`)
 - **Headers**: ATX style (`# Header`).
 - **Lists**: Hyphens (`- item`).
+- **Slash Commands**: Must follow `/forge.<command>` format (e.g., `/forge.plan`).
+
+### Scripts (`scripts/`)
+- **Bash**: `set -e` (exit on error) required.
+- **PowerShell**: `$ErrorActionPreference = "Stop"` required.
 
 ## 3. Workflow Rules
-- **Verify**: Always run `ls` or `grep` after file creation.
+- **Verify**: Always run `ls`, `grep`, or `read_file` after modification.
 - **No Blind Debugging**: If a test fails, revert to the last known good state if the fix isn't obvious.
+- **Pre-Commit**: Always run pre-commit checks before submitting.

@@ -1,12 +1,12 @@
-# Installation Guide - IA MAX Kit
+# Installation Guide - FORGE
 
-This guide explains how to install and use **IA MAX Kit** instead of the public Spec Kit.
+This guide explains how to install and use **FORGE** instead of the public Spec Kit.
 
 ---
 
 ## 🎯 Overview
 
-IA MAX Kit is a private fork of GitHub Spec Kit with enhanced multi-agent capabilities. Since it's in active development (currently preparing M0), it's not yet published to PyPI. You'll install directly from the GitHub repository.
+FORGE is a private fork of GitHub Spec Kit with enhanced multi-agent capabilities. Since it's in active development (currently preparing M0), it's not yet published to PyPI. You'll install directly from the GitHub repository.
 
 ---
 
@@ -23,12 +23,12 @@ IA MAX Kit is a private fork of GitHub Spec Kit with enhanced multi-agent capabi
 
 ### Method 1: Install from GitHub (Recommended for Development)
 
-This method installs IA MAX Kit in "editable" mode, allowing you to modify the code and see changes immediately.
+This method installs FORGE in "editable" mode, allowing you to modify the code and see changes immediately.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yuichiinumaru/aimax-kit.git
-cd aimax-kit
+git clone https://github.com/suportesaude/forge.git
+cd forge
 
 # Install in editable mode with pip
 pip install -e .
@@ -36,7 +36,7 @@ pip install -e .
 
 **Verify installation:**
 ```bash
-specify --version
+forge --version
 ```
 
 You should see version `0.1.0` or higher.
@@ -45,16 +45,16 @@ You should see version `0.1.0` or higher.
 
 ### Method 2: Install from GitHub (Production Mode)
 
-This installs IA MAX Kit as a regular package without keeping the source code editable.
+This installs FORGE as a regular package without keeping the source code editable.
 
 ```bash
 # Install directly from GitHub
-pip install git+https://github.com/yuichiinumaru/aimax-kit.git
+pip install git+https://github.com/suportesaude/forge.git
 ```
 
 **Verify installation:**
 ```bash
-specify --version
+forge --version
 ```
 
 ---
@@ -65,19 +65,19 @@ Using a virtual environment prevents conflicts with other Python packages.
 
 ```bash
 # Create a virtual environment
-python -m venv aimax-env
+python -m venv forge-env
 
 # Activate the virtual environment
 # On macOS/Linux:
-source aimax-env/bin/activate
+source forge-env/bin/activate
 # On Windows:
-aimax-env\Scripts\activate
+forge-env\Scripts\activate
 
-# Install IA MAX Kit
-pip install git+https://github.com/yuichiinumaru/aimax-kit.git
+# Install FORGE
+pip install git+https://github.com/suportesaude/forge.git
 
 # Verify
-specify --version
+forge --version
 ```
 
 ---
@@ -89,7 +89,7 @@ specify --version
 Run the built-in check command to verify all tools are installed:
 
 ```bash
-specify check
+forge check
 ```
 
 This will check for:
@@ -98,7 +98,7 @@ This will check for:
 
 ### 2. Configure Your AI Assistant
 
-IA MAX Kit supports multiple AI assistants. Make sure you have at least one installed:
+FORGE supports multiple AI assistants. Make sure you have at least one installed:
 
 | Assistant | Installation | Documentation |
 |-----------|--------------|---------------|
@@ -112,14 +112,14 @@ IA MAX Kit supports multiple AI assistants. Make sure you have at least one inst
 
 ```bash
 # Interactive mode (recommended for first time)
-specify init my-project
+forge init my-project
 
 # Or specify options directly
-specify init my-project --ai claude --script sh
+forge init my-project --ai claude --script sh
 ```
 
 This will:
-- Download the IA MAX Kit template
+- Download the FORGE template
 - Set up directory structure
 - Configure slash commands for your AI assistant
 - Initialize a git repository (unless `--no-git`)
@@ -128,11 +128,11 @@ This will:
 
 ## 📦 What Gets Installed
 
-When you initialize a project, IA MAX Kit creates:
+When you initialize a project, FORGE creates:
 
 ```
 my-project/
-├── .specify/               # IA MAX Kit configuration and scripts
+├── .forge/               # FORGE configuration and scripts
 │   ├── templates/          # All templates (spec, plan, tasks, etc.)
 │   └── scripts/           # Automation scripts (bash/PowerShell)
 ├── .claude/               # Claude Code commands (if using Claude)
@@ -157,7 +157,7 @@ my-project/
 ```bash
 # In your project directory
 # Use your AI assistant to run:
-/aimaxkit.specify "Add user authentication"
+/forge.specify "Add user authentication"
 ```
 
 This creates a new feature branch and specification.
@@ -165,7 +165,7 @@ This creates a new feature branch and specification.
 ### 2. Create a Plan
 
 ```bash
-/aimaxkit.plan
+/forge.plan
 ```
 
 This generates a technical implementation plan.
@@ -173,7 +173,7 @@ This generates a technical implementation plan.
 ### 3. Generate Tasks
 
 ```bash
-/aimaxkit.tasks
+/forge.tasks
 ```
 
 This breaks down the plan into actionable tasks.
@@ -181,19 +181,19 @@ This breaks down the plan into actionable tasks.
 ### 4. Implement
 
 ```bash
-/aimaxkit.implement
+/forge.implement
 ```
 
 This guides you through implementation.
 
 ---
 
-## 🔄 Updating IA MAX Kit
+## 🔄 Updating FORGE
 
 ### If Installed in Editable Mode
 
 ```bash
-cd aimax-kit
+cd forge
 git pull origin main
 ```
 
@@ -202,7 +202,7 @@ Changes are immediately available.
 ### If Installed in Production Mode
 
 ```bash
-pip install --upgrade git+https://github.com/yuichiinumaru/aimax-kit.git
+pip install --upgrade git+https://github.com/suportesaude/forge.git
 ```
 
 ---
@@ -211,23 +211,23 @@ pip install --upgrade git+https://github.com/yuichiinumaru/aimax-kit.git
 
 If you're familiar with GitHub Spec Kit, here are the key differences:
 
-| Aspect | Spec Kit | IA MAX Kit |
+| Aspect | Spec Kit | FORGE |
 |--------|----------|------------|
-| **Command prefix** | `/speckit.*` | `/aimaxkit.*` |
-| **Repository** | `github/spec-kit` | `yuichiinumaru/aimax-kit` |
+| **Command prefix** | `/speckit.*` | `/forge.*` |
+| **Repository** | `github/spec-kit` | `suportesaude/forge` |
 | **Version** | 0.0.20 | 0.1.0+ |
-| **Package name** | `specify-cli` | `aimax-kit` |
-| **Slash commands** | 8 commands | 8 + 8 new IA MAX commands |
-| **Templates** | 5 templates | 5 + 11 new IA MAX templates |
+| **Package name** | `forge` | `forge` |
+| **Slash commands** | 8 commands | 8 + 8 new FORGE commands |
+| **Templates** | 5 templates | 5 + 11 new FORGE templates |
 | **Focus** | Spec-Driven Development | Multi-agent orchestration + SDD |
 
-**Backward Compatibility**: Original `/speckit.*` commands still work. New IA MAX features use `/aimaxkit.*` prefix.
+**Backward Compatibility**: Original `/speckit.*` commands still work. New FORGE features use `/forge.*` prefix.
 
 ---
 
 ## 🐛 Troubleshooting
 
-### "specify: command not found"
+### "forge: command not found"
 
 **Solution**: Ensure pip's bin directory is in your PATH.
 
@@ -247,19 +247,19 @@ pip install --user -e .
 
 ### "No matching release asset found"
 
-This error occurs if you're trying to use the original Spec Kit download URLs. IA MAX Kit uses a different repository.
+This error occurs if you're trying to use the original Spec Kit download URLs. FORGE uses a different repository.
 
-**Solution**: Ensure you're running version 0.1.0+ of IA MAX Kit:
+**Solution**: Ensure you're running version 0.1.0+ of FORGE:
 
 ```bash
-specify --version
+forge --version
 ```
 
 If you see 0.0.x, you have the old Spec Kit installed. Uninstall and reinstall:
 
 ```bash
 pip uninstall specify-cli
-pip install git+https://github.com/yuichiinumaru/aimax-kit.git
+pip install git+https://github.com/suportesaude/forge.git
 ```
 
 ### SSL/TLS Certificate Errors
@@ -267,7 +267,7 @@ pip install git+https://github.com/yuichiinumaru/aimax-kit.git
 If you encounter certificate errors:
 
 ```bash
-specify init my-project --skip-tls
+forge init my-project --skip-tls
 ```
 
 **Warning**: Only use `--skip-tls` in trusted environments.
@@ -289,7 +289,7 @@ For higher API rate limits and access to private repositories:
 export GITHUB_TOKEN=your_token_here
 
 # Or pass directly
-specify init my-project --github-token your_token_here
+forge init my-project --github-token your_token_here
 ```
 
 Generate a token at: https://github.com/settings/tokens
@@ -304,22 +304,22 @@ Run this quick test to ensure everything works:
 
 ```bash
 # 1. Check version
-specify --version
+forge --version
 
 # 2. Run system check
-specify check
+forge check
 
 # 3. Initialize a test project
-specify init test-project --ai claude --script sh
+forge init test-project --ai claude --script sh
 
 # 4. Navigate to project
 cd test-project
 
 # 5. Verify structure
-ls -la .specify/
+ls -la .forge/
 ```
 
-You should see the `.specify/` directory with templates and scripts.
+You should see the `.forge/` directory with templates and scripts.
 
 ---
 
@@ -330,8 +330,8 @@ Once installed:
 1. **Read the Documentation**: Start with [README-FIRST.md](../README-FIRST.md)
 2. **Understand the Philosophy**: Read [AGENTS.md](AGENTS.md)
 3. **Follow M0 Guide**: See [11-M0-ACTION-PLAN.md](../11-M0-ACTION-PLAN.md) if contributing
-4. **Initialize a Project**: Run `specify init my-project`
-5. **Try Slash Commands**: Use `/aimaxkit.specify`, `/aimaxkit.plan`, etc.
+4. **Initialize a Project**: Run `forge init my-project`
+5. **Try Slash Commands**: Use `/forge.specify`, `/forge.plan`, etc.
 
 ---
 
@@ -340,13 +340,13 @@ Once installed:
 - **Use `--debug`**: Add `--debug` flag to any command for verbose output
 - **Check logs**: The CLI shows detailed progress during initialization
 - **Multiple agents**: You can initialize for different AI assistants in the same project
-- **Update regularly**: IA MAX Kit is in active development (M0-M3 phases)
+- **Update regularly**: FORGE is in active development (M0-M3 phases)
 
 ---
 
 ## 🆘 Getting Help
 
-- **Issues**: https://github.com/yuichiinumaru/aimax-kit/issues
+- **Issues**: https://github.com/suportesaude/forge/issues
 - **Documentation**: See all MD files in the root directory
 - **Status Report**: Read `00-STATUS-REPORT.md` for current project state
 
@@ -354,10 +354,10 @@ Once installed:
 
 ## 📄 License
 
-IA MAX Kit is released under the MIT License, maintaining compatibility with the original GitHub Spec Kit license.
+FORGE is released under the MIT License, maintaining compatibility with the original GitHub Spec Kit license.
 
 See: [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md)
 
 ---
 
-**Happy developing with IA MAX Kit!** 🚀
+**Happy developing with FORGE!** 🚀

@@ -22,16 +22,16 @@
 The easiest way to get started is to initialize a new project using `uvx`:
 
 ```bash
-uvx --from git+https://github.com/pew-pew-prompts/forge.git forge init <PROJECT_NAME>
+uvx --from git+https://github.com/suportesaude/forge.git forge init <PROJECT_NAME>
 ```
 *(Note: Replace URL with your actual repository URL)*
 
 Or initialize in the current directory:
 
 ```bash
-uvx --from git+https://github.com/pew-pew-prompts/forge.git forge init .
+uvx --from git+https://github.com/suportesaude/forge.git forge init .
 # or
-uvx --from git+https://github.com/pew-pew-prompts/forge.git forge init --here
+uvx --from git+https://github.com/suportesaude/forge.git forge init --here
 ```
 
 ### Specify AI Agent
@@ -64,7 +64,7 @@ forge init <project_name> --ai claude --ignore-agent-tools
 
 ## Verification
 
-After initialization, check for the available slash commands in your agent's context (e.g., by typing `/` or checking the `.forge` or `.specify` directory instructions):
+After initialization, check for the available slash commands in your agent's context (e.g., by typing `/` or checking the `.forge` or `.forge` directory instructions):
 - `/forge.constitution`
 - `/forge.specify`
 - `/forge.plan`
