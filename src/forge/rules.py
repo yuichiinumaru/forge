@@ -23,6 +23,13 @@ def load_rule_block(category: str, name: str) -> str:
     """Load a specific rule block from templates."""
     rules_dir = get_rules_dir()
     path = rules_dir / category / f"{name}.md"
+RULES_DIR = Path(__file__).parent.parent.parent / "templates" / "rules"
+
+def load_rule_block(category: str, name: str) -> str:
+    """Load a specific rule block from templates."""
+    # In a real installed package, this would look in package data or a user config dir
+    # For now, we assume we are running in the repo context
+    path = RULES_DIR / category / f"{name}.md"
     if not path.exists():
         return f"<!-- Missing rule block: {category}/{name} -->"
     return path.read_text()
