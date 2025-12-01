@@ -19,6 +19,7 @@ from forge.utils import (
     is_git_repo, init_git_repo, ensure_executable_scripts
 )
 from forge.downloader import download_and_extract_template, copy_local_template
+from forge.downloader import download_and_extract_template
 
 # Initialize SSL/Client again for CLI use
 ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -116,6 +117,7 @@ def init(
     1. Check that required tools are installed (git is optional)
     2. Let you choose your AI assistant
     3. Download the appropriate template from GitHub (or use local templates with --local)
+    3. Download the appropriate template from GitHub
     4. Extract the template to a new project directory or current directory
     5. Initialize a fresh git repository (if not --no-git and no existing repo)
     6. Optionally set up AI assistant commands
@@ -287,6 +289,14 @@ def init(
 
     for key, label in [
         ("chmod", "Ensure scripts executable"),
+    for key, label in [
+        ("fetch", "Fetch latest release"),
+        ("download", "Download template"),
+        ("extract", "Extract template"),
+        ("zip-list", "Archive contents"),
+        ("extracted-summary", "Extraction summary"),
+        ("chmod", "Ensure scripts executable"),
+        ("cleanup", "Cleanup"),
         ("git", "Initialize git repository"),
         ("final", "Finalize"),
     ]:
@@ -325,6 +335,21 @@ def init(
                     debug=debug,
                     github_token=github_token,
                 )
+            verify = not skip_tls
+            local_ssl_context = ssl_context if verify else False
+            local_client = httpx.Client(verify=local_ssl_context)
+
+            download_and_extract_template(
+                project_path,
+                selected_ai,
+                selected_script,
+                here,
+                verbose=False,
+                tracker=tracker,
+                client=local_client,
+                debug=debug,
+                github_token=github_token,
+            )
 
             ensure_executable_scripts(project_path, tracker=tracker)
 
