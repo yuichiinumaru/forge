@@ -10,18 +10,18 @@
 # ]
 # ///
 """
-Specify CLI - Setup tool for Specify projects
+Forge CLI - Setup tool for Forge projects
 
 Usage:
-    uvx specify-cli.py init <project-name>
-    uvx specify-cli.py init .
-    uvx specify-cli.py init --here
+    uvx forge.py init <project-name>
+    uvx forge.py init .
+    uvx forge.py init --here
 
 Or install globally:
-    uv tool install --from specify-cli.py specify-cli
-    specify init <project-name>
-    specify init .
-    specify init --here
+    uv tool install --from forge.py forge
+    forge init <project-name>
+    forge init .
+    forge init --here
 """
 
 import os
@@ -164,7 +164,7 @@ BANNER = """
 ╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝
 """
 
-TAGLINE = "IA MAX Kit - AI-Driven Multi-Agent Development Framework (forked from GitHub Spec Kit)"
+TAGLINE = "Forge Kit - AI-Driven Multi-Agent Development Framework (formerly Spec Kit)"
 
 
 class StepTracker:
@@ -418,7 +418,7 @@ def callback(ctx: typer.Context):
     ):
         show_banner()
         console.print(
-            Align.center("[dim]Run 'specify --help' for usage information[/dim]")
+            Align.center("[dim]Run 'forge --help' for usage information[/dim]")
         )
         console.print()
 
@@ -637,7 +637,7 @@ def download_template_from_github(
     github_token: str = None,
 ) -> Tuple[Path, dict]:
     repo_owner = "yuichiinumaru"
-    repo_name = "aimax-kit"
+    repo_name = "aimax-kit" # NOTE: Using legacy repo name for downloads until Forge artifacts are published
     if client is None:
         client = httpx.Client(verify=ssl_context)
 
@@ -1057,7 +1057,7 @@ def init(
     ),
 ):
     """
-    Initialize a new Specify project from the latest template.
+    Initialize a new Forge project from the latest template.
 
     This command will:
     1. Check that required tools are installed (git is optional)
@@ -1068,17 +1068,17 @@ def init(
     6. Optionally set up AI assistant commands
 
     Examples:
-        specify init my-project
-        specify init my-project --ai claude
-        specify init my-project --ai copilot --no-git
-        specify init --ignore-agent-tools my-project
-        specify init . --ai claude         # Initialize in current directory
-        specify init .                     # Initialize in current directory (interactive AI selection)
-        specify init --here --ai claude    # Alternative syntax for current directory
-        specify init --here --ai codex
-        specify init --here --ai codebuddy
-        specify init --here
-        specify init --here --force  # Skip confirmation when current directory not empty
+        forge init my-project
+        forge init my-project --ai claude
+        forge init my-project --ai copilot --no-git
+        forge init --ignore-agent-tools my-project
+        forge init . --ai claude         # Initialize in current directory
+        forge init .                     # Initialize in current directory (interactive AI selection)
+        forge init --here --ai claude    # Alternative syntax for current directory
+        forge init --here --ai codex
+        forge init --here --ai codebuddy
+        forge init --here
+        forge init --here --force  # Skip confirmation when current directory not empty
     """
 
     show_banner()
@@ -1137,7 +1137,7 @@ def init(
     current_dir = Path.cwd()
 
     setup_lines = [
-        "[cyan]Specify Project Setup[/cyan]",
+        "[cyan]Forge Project Setup[/cyan]",
         "",
         f"{'Project':<15} [green]{project_path.name}[/green]",
         f"{'Working Path':<15} [dim]{current_dir}[/dim]",
@@ -1210,7 +1210,7 @@ def init(
     console.print(f"[cyan]Selected AI assistant:[/cyan] {selected_ai}")
     console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
 
-    tracker = StepTracker("Initialize Specify Project")
+    tracker = StepTracker("Initialize Forge Project")
 
     sys._specify_tracker_active = True
 
@@ -1368,14 +1368,14 @@ def init(
     steps_lines.append(f"{step_num}. Start using slash commands with your AI agent:")
 
     steps_lines.append(
-        "   2.1 [cyan]/aimaxkit.constitution[/] - Establish project principles"
+        "   2.1 [cyan]/forge.constitution[/] - Establish project principles"
     )
     steps_lines.append(
-        "   2.2 [cyan]/aimaxkit.specify[/] - Create baseline specification"
+        "   2.2 [cyan]/forge.specify[/] - Create baseline specification"
     )
-    steps_lines.append("   2.3 [cyan]/aimaxkit.plan[/] - Create implementation plan")
-    steps_lines.append("   2.4 [cyan]/aimaxkit.tasks[/] - Generate actionable tasks")
-    steps_lines.append("   2.5 [cyan]/aimaxkit.implement[/] - Execute implementation")
+    steps_lines.append("   2.3 [cyan]/forge.plan[/] - Create implementation plan")
+    steps_lines.append("   2.4 [cyan]/forge.tasks[/] - Generate actionable tasks")
+    steps_lines.append("   2.5 [cyan]/forge.implement[/] - Execute implementation")
 
     steps_panel = Panel(
         "\n".join(steps_lines), title="Next Steps", border_style="cyan", padding=(1, 2)
@@ -1386,9 +1386,9 @@ def init(
     enhancement_lines = [
         "Optional commands that you can use for your specs [bright_black](improve quality & confidence)[/bright_black]",
         "",
-        f"○ [cyan]/aimaxkit.clarify[/] [bright_black](optional)[/bright_black] - Ask structured questions to de-risk ambiguous areas before planning (run before [cyan]/aimaxkit.plan[/] if used)",
-        f"○ [cyan]/aimaxkit.analyze[/] [bright_black](optional)[/bright_black] - Cross-artifact consistency & alignment report (after [cyan]/aimaxkit.tasks[/], before [cyan]/aimaxkit.implement[/])",
-        f"○ [cyan]/aimaxkit.checklist[/] [bright_black](optional)[/bright_black] - Generate quality checklists to validate requirements completeness, clarity, and consistency (after [cyan]/aimaxkit.plan[/])",
+        f"○ [cyan]/forge.clarify[/] [bright_black](optional)[/bright_black] - Ask structured questions to de-risk ambiguous areas before planning (run before [cyan]/forge.plan[/] if used)",
+        f"○ [cyan]/forge.analyze[/] [bright_black](optional)[/bright_black] - Cross-artifact consistency & alignment report (after [cyan]/forge.tasks[/], before [cyan]/forge.implement[/])",
+        f"○ [cyan]/forge.checklist[/] [bright_black](optional)[/bright_black] - Generate quality checklists to validate requirements completeness, clarity, and consistency (after [cyan]/forge.plan[/])",
     ]
     enhancements_panel = Panel(
         "\n".join(enhancement_lines),
@@ -1434,7 +1434,7 @@ def check():
 
     console.print(tracker.render())
 
-    console.print("\n[bold green]Specify CLI is ready to use![/bold green]")
+    console.print("\n[bold green]Forge CLI is ready to use![/bold green]")
 
     if not git_ok:
         console.print("[dim]Tip: Install git for repository management[/dim]")
