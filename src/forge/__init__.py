@@ -164,7 +164,7 @@ BANNER = """
 ╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝
 """
 
-TAGLINE = "Forge Kit - AI-Driven Multi-Agent Development Framework (formerly Spec Kit)"
+TAGLINE = "Forge Kit - AI-Driven Multi-Agent Development Framework (formerly Ai Max / Spec Kit)"
 
 
 class StepTracker:
@@ -636,8 +636,8 @@ def download_template_from_github(
     debug: bool = False,
     github_token: str = None,
 ) -> Tuple[Path, dict]:
-    repo_owner = "yuichiinumaru"
-    repo_name = "aimax-kit" # NOTE: Using legacy repo name for downloads until Forge artifacts are published
+    repo_owner = "suportesaude"
+    repo_name = "forge"
     if client is None:
         client = httpx.Client(verify=ssl_context)
 
@@ -670,7 +670,7 @@ def download_template_from_github(
         raise typer.Exit(1)
 
     assets = release_data.get("assets", [])
-    pattern = f"aimax-kit-template-{ai_assistant}-{script_type}"
+    pattern = f"forge-kit-template-{ai_assistant}-{script_type}"
     matching_assets = [
         asset
         for asset in assets

@@ -11,7 +11,7 @@ This guide will help you get started with Spec-Driven Development using FORGE.
 Initialize your project depending on the coding agent you're using:
 
 ```bash
-uvx --from git+https://github.com/pew-pew-prompts/forge.git forge init <PROJECT_NAME>
+uvx --from git+https://github.com/suportesaude/forge.git forge init <PROJECT_NAME>
 ```
 
 ### 2. Create the Spec

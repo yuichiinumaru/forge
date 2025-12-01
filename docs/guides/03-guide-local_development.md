@@ -5,7 +5,7 @@ This guide shows how to iterate on the **Forge CLI** locally.
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/pew-pew-prompts/forge.git
+git clone https://github.com/suportesaude/forge.git
 cd forge
 ```
 

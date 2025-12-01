@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # create-release-packages.sh (workflow-local)
-# Build Spec Kit template release archives for each supported AI assistant and script type.
+# Build FORGE template release archives for each supported AI assistant and script type.
 # Usage: .github/workflows/scripts/create-release-packages.sh <version>
 #   Version argument should include leading 'v'.
 #   Optionally set AGENTS and/or SCRIPTS env vars to limit what gets built.
@@ -23,7 +23,7 @@ if [[ ! $NEW_VERSION =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   exit 1
 fi
 
-echo "Building IA MAX Kit release packages for $NEW_VERSION"
+echo "Building FORGE release packages for $NEW_VERSION"
 
 # Create and use .genreleases directory for all build artifacts
 GENRELEASES_DIR=".genreleases"
@@ -92,19 +92,19 @@ generate_commands() {
     case $ext in
       toml)
         body=$(printf '%s\n' "$body" | sed 's/\\/\\\\/g')
-        { echo "description = \"$description\""; echo; echo "prompt = \"\"\""; echo "$body"; echo "\"\"\""; } > "$output_dir/forge.$name.$ext" ;;
+        { echo "description = \"$description\""; echo; echo "prompt = \"\"\""; echo "$body"; echo "\"\"\""; } > "$output_dir/$name.$ext" ;;
       md)
-        echo "$body" > "$output_dir/forge.$name.$ext" ;;
+        echo "$body" > "$output_dir/$name.$ext" ;;
       prompt.md)
-        echo "$body" > "$output_dir/forge.$name.$ext" ;;
+        echo "$body" > "$output_dir/$name.$ext" ;;
     esac
   done
 }
 
 build_variant() {
   local agent=$1 script=$2
-  local base_dir="$GENRELEASES_DIR/aimax-${agent}-package-${script}"
-  echo "Building IA MAX Kit $agent ($script) package..."
+  local base_dir="$GENRELEASES_DIR/forge-${agent}-package-${script}"
+  echo "Building FORGE $agent ($script) package..."
   mkdir -p "$base_dir"
 
   # Copy base structure but filter scripts by variant
@@ -186,8 +186,8 @@ build_variant() {
       mkdir -p "$base_dir/.amazonq/prompts"
       generate_commands q md "\$ARGUMENTS" "$base_dir/.amazonq/prompts" "$script" ;;
   esac
-  ( cd "$base_dir" && zip -r "../aimax-kit-template-${agent}-${script}-${NEW_VERSION}.zip" . )
-  echo "Created $GENRELEASES_DIR/aimax-kit-template-${agent}-${script}-${NEW_VERSION}.zip"
+  ( cd "$base_dir" && zip -r "../forge-kit-template-${agent}-${script}-${NEW_VERSION}.zip" . )
+  echo "Created $GENRELEASES_DIR/forge-kit-template-${agent}-${script}-${NEW_VERSION}.zip"
 }
 
 # Determine agent list
@@ -236,5 +236,5 @@ for agent in "${AGENT_LIST[@]}"; do
   done
 done
 
-echo "IA MAX Kit archives in $GENRELEASES_DIR:"
-ls -1 "$GENRELEASES_DIR"/aimax-kit-template-*-"${NEW_VERSION}".zip
+echo "FORGE archives in $GENRELEASES_DIR:"
+ls -1 "$GENRELEASES_DIR"/forge-kit-template-*-"${NEW_VERSION}".zip

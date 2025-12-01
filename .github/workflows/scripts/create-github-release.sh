@@ -16,31 +16,31 @@ VERSION="$1"
 VERSION_NO_V=${VERSION#v}
 
 gh release create "$VERSION" \
-  .genreleases/aimax-kit-template-copilot-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-copilot-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-claude-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-claude-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-gemini-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-gemini-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-cursor-agent-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-cursor-agent-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-opencode-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-opencode-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-qwen-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-qwen-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-windsurf-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-windsurf-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-codex-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-codex-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-kilocode-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-kilocode-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-auggie-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-auggie-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-roo-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-roo-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-codebuddy-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-codebuddy-ps-"$VERSION".zip \
-  .genreleases/aimax-kit-template-q-sh-"$VERSION".zip \
-  .genreleases/aimax-kit-template-q-ps-"$VERSION".zip \
-  --title "IA MAX Kit Templates - $VERSION_NO_V" \
+  .genreleases/forge-kit-template-copilot-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-copilot-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-claude-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-claude-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-gemini-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-gemini-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-cursor-agent-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-cursor-agent-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-opencode-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-opencode-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-qwen-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-qwen-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-windsurf-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-windsurf-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-codex-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-codex-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-kilocode-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-kilocode-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-auggie-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-auggie-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-roo-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-roo-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-codebuddy-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-codebuddy-ps-"$VERSION".zip \
+  .genreleases/forge-kit-template-q-sh-"$VERSION".zip \
+  .genreleases/forge-kit-template-q-ps-"$VERSION".zip \
+  --title "FORGE Templates - $VERSION_NO_V" \
   --notes-file release_notes.md
