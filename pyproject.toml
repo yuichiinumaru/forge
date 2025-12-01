@@ -1,7 +1,7 @@
 [project]
-name = "aimax-kit"
+name = "forge"
 version = "0.1.0"
-description = "IA MAX Kit - AI-Driven Multi-Agent Development Framework. Forked from GitHub Spec Kit with enhanced multi-agent capabilities, RPG, observability, and TEVV."
+description = "Forge Kit - AI-Driven Multi-Agent Development Framework. Forked from GitHub Spec Kit with enhanced multi-agent capabilities, RPG, observability, and TEVV."
 requires-python = ">=3.11"
 dependencies = [
     "typer",
@@ -13,11 +13,12 @@ dependencies = [
 ]
 
 [project.scripts]
-specify = "specify_cli:main"
+forge = "forge:main"
+specify = "forge:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/specify_cli"]
+packages = ["src/forge"]
