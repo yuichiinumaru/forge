@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 from typer.testing import CliRunner
 from forge.cli import app
 from forge import __init__  # Verify import works
@@ -27,3 +28,26 @@ def test_local_flag_help():
     """Test that the --local flag is visible in help."""
     result = runner.invoke(app, ["init", "--help"])
     assert "--local" in result.stdout
+
+def test_init_invalid_ai():
+    result = runner.invoke(app, ["init", "myproject", "--ai", "invalid_ai"])
+    assert result.exit_code != 0
+    assert "Invalid AI assistant" in result.stdout
+
+def test_init_invalid_script():
+    result = runner.invoke(app, ["init", "myproject", "--ai", "copilot", "--script", "invalid"])
+    assert result.exit_code != 0
+    assert "Invalid script type" in result.stdout
+
+def test_init_dir_conflict():
+    with runner.isolated_filesystem():
+        # Create a directory conflict
+        Path("conflict_project").mkdir()
+        result = runner.invoke(app, ["init", "conflict_project"])
+        assert result.exit_code != 0
+        assert "already exists" in result.stdout
+
+def test_rules_compile_help():
+    result = runner.invoke(app, ["rules", "compile", "--help"])
+    assert result.exit_code == 0
+    assert "Compile a .cursorrules file" in result.stdout

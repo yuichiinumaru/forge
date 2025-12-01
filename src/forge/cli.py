@@ -19,7 +19,8 @@ from forge.utils import (
     is_git_repo, init_git_repo, ensure_executable_scripts
 )
 from forge.downloader import download_and_extract_template, copy_local_template
-from forge.downloader import download_and_extract_template
+
+from forge.rules import app as rules_app
 
 # Initialize SSL/Client again for CLI use
 ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -42,6 +43,8 @@ app = typer.Typer(
     invoke_without_command=True,
     cls=BannerGroup,
 )
+
+app.add_typer(rules_app, name="rules", help="Manage and compile project rules (.cursorrules, etc.)")
 
 
 @app.callback()
@@ -289,14 +292,6 @@ def init(
 
     for key, label in [
         ("chmod", "Ensure scripts executable"),
-    for key, label in [
-        ("fetch", "Fetch latest release"),
-        ("download", "Download template"),
-        ("extract", "Extract template"),
-        ("zip-list", "Archive contents"),
-        ("extracted-summary", "Extraction summary"),
-        ("chmod", "Ensure scripts executable"),
-        ("cleanup", "Cleanup"),
         ("git", "Initialize git repository"),
         ("final", "Finalize"),
     ]:
@@ -335,21 +330,6 @@ def init(
                     debug=debug,
                     github_token=github_token,
                 )
-            verify = not skip_tls
-            local_ssl_context = ssl_context if verify else False
-            local_client = httpx.Client(verify=local_ssl_context)
-
-            download_and_extract_template(
-                project_path,
-                selected_ai,
-                selected_script,
-                here,
-                verbose=False,
-                tracker=tracker,
-                client=local_client,
-                debug=debug,
-                github_token=github_token,
-            )
 
             ensure_executable_scripts(project_path, tracker=tracker)
 
