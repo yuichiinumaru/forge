@@ -13,7 +13,7 @@
 
 ---
 
-## En Taro Executor.
+## En Taro Adun, Executor.
 
 You have summoned **FORGE**. This is not merely a tool; it is a **Psi-Emitter** for orchestrating AI constructs. It enforces discipline, structure, and honor upon the chaotic energies of Large Language Models.
 
