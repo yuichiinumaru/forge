@@ -7,13 +7,16 @@
 ## Active Tasks (Incomplete)
 
 ### Priority 2: Templates & Agent Integration
-- [ ] Update all markdown templates in `templates/` to use "FORGE" terminology.
-- [ ] Verify slash commands format (`/forge.*`).
-- [ ] Update shell scripts (`scripts/`) to reflect new paths.
+- [x] Update all markdown templates in `templates/` to use "FORGE" terminology.
+- [x] Verify slash commands format (`/forge.*`).
+- [x] Update shell scripts (`scripts/`) to reflect new paths.
 
 ### Priority 3: Release Engineering
-- [ ] Update GitHub Actions workflows for "Forge" branding.
-- [ ] Verify release asset generation.
+- [x] Update GitHub Actions workflows for "Forge" branding.
+- [x] Verify release asset generation.
+
+### Priority 4: Fixes & Improvements
+- [ ] Fix `forge init --local` structural mismatch (requires aligning repo structure or build logic).
 
 ## Archive (Completed)
 
