@@ -11,6 +11,128 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from forge.utils import console, StepTracker, handle_vscode_settings, _github_auth_headers
 
+def copy_local_template(
+    project_path: Path,
+    ai_assistant: str,
+    script_type: str,
+    is_current_dir: bool = False,
+    *,
+    tracker: StepTracker | None = None,
+    debug: bool = False,
+) -> Path:
+    """Copy templates from local source instead of downloading."""
+    # Find the root of the repo (assuming we are running from src/forge or similar)
+    # We need to find the 'templates' folder.
+    # If running installed, this might be harder, but this flag is for "self-hosting dev"
+    # so we assume we are in the repo.
+
+    # Try to find templates relative to the current working directory or the package location
+    potential_roots = [
+        Path.cwd(),
+        Path(__file__).parent.parent.parent, # If in src/forge/downloader.py, go up to root
+    ]
+
+    templates_root = None
+    for root in potential_roots:
+        if (root / "templates").is_dir():
+            templates_root = root / "templates"
+            break
+
+    if not templates_root:
+        msg = "Could not find 'templates' directory in current path or parent directories."
+        if tracker:
+            tracker.error("copy-local", msg)
+        raise RuntimeError(msg)
+
+    if tracker:
+        tracker.start("copy-local", f"from {templates_root}")
+    else:
+        console.print(f"[cyan]Copying local templates from:[/cyan] {templates_root}")
+
+    try:
+        # Create destination directory
+        if not is_current_dir:
+            project_path.mkdir(parents=True, exist_ok=True)
+
+        # 1. Copy common structure
+        structure_dir = templates_root / "structure"
+        if structure_dir.exists():
+            _merge_directory(structure_dir, project_path, verbose=False, tracker=tracker)
+
+        # 2. Copy agent specific config
+        # The local structure might differ from the ZIP structure depending on how the repo is organized.
+        # In the repo: templates/structure, templates/[agent-dirs], templates/commands
+        # In the ZIP: It's usually flattened or specific to the agent.
+        # Based on AGENTS.md, `templates/` contains `[agent_dirs]/`.
+
+        # We need to map ai_assistant key to folder name.
+        # config.AGENT_CONFIG has the folder name.
+        from forge.config import AGENT_CONFIG
+        agent_config = AGENT_CONFIG.get(ai_assistant)
+        if not agent_config:
+             raise ValueError(f"Unknown agent: {ai_assistant}")
+
+        agent_folder_name = agent_config["folder"].strip("/") # e.g. ".cursor"
+
+        # Find the source folder for this agent in templates/
+        # It seems the repo structure is flat under templates/ for agents?
+        # Let's check if there is a directory that matches the agent folder name (without dot usually in source, or with dot?)
+        # Actually in AGENTS.md: `templates/[agent_dirs]/`.
+        # Let's assume the directory name in templates/ matches the target directory name (e.g. .cursor)
+
+        agent_source = templates_root / agent_folder_name
+        if not agent_source.exists():
+            # Try without dot
+            agent_source = templates_root / agent_folder_name.lstrip(".")
+
+        if agent_source.exists():
+             # We want to copy the CONTENTS of agent_source to project_path/agent_folder_name
+             # Wait, usually the ZIP puts the .cursor folder IN the root.
+             # So we copy agent_source TO project_path / agent_folder_name
+             target_agent_dir = project_path / agent_folder_name
+             if not target_agent_dir.exists():
+                 target_agent_dir.mkdir(parents=True, exist_ok=True)
+             _merge_directory(agent_source, target_agent_dir, verbose=False, tracker=tracker)
+
+        # 3. Copy commands/scripts if applicable?
+        # The ZIP usually contains the finalized structure.
+        # For "init --local", we are approximating the "build" process.
+        # The scripts are in `scripts/` in the repo, but in `.forge/scripts` in the target?
+        # AGENTS.md says: `templates/commands/` (Slash command templates).
+
+        # In a real build, we might zip this up. For now, let's copy what we can find.
+
+        if tracker:
+            tracker.complete("copy-local", "done")
+
+    except Exception as e:
+        if tracker:
+            tracker.error("copy-local", str(e))
+        raise
+
+    return project_path
+
+
+def _merge_directory(src: Path, dst: Path, verbose: bool = False, tracker: StepTracker = None):
+    """Recursively merge src directory into dst directory."""
+    for item in src.iterdir():
+        dest_path = dst / item.name
+        if item.is_dir():
+            if not dest_path.exists():
+                dest_path.mkdir(parents=True, exist_ok=True)
+            _merge_directory(item, dest_path, verbose, tracker)
+        else:
+            # File
+            if dest_path.exists():
+                 # Handle special files like vscode settings if needed, or just overwrite
+                 if dest_path.name == "settings.json" and dest_path.parent.name == ".vscode":
+                     handle_vscode_settings(item, dest_path, dest_path.relative_to(dst), verbose, tracker)
+                 else:
+                     shutil.copy2(item, dest_path)
+            else:
+                 shutil.copy2(item, dest_path)
+
+
 def download_template_from_github(
     ai_assistant: str,
     download_dir: Path,

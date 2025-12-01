@@ -18,6 +18,7 @@ from forge.utils import (
     console, StepTracker, select_with_arrows, show_banner, check_tool,
     is_git_repo, init_git_repo, ensure_executable_scripts
 )
+from forge.downloader import download_and_extract_template, copy_local_template
 from forge.downloader import download_and_extract_template
 
 # Initialize SSL/Client again for CLI use
@@ -103,6 +104,11 @@ def init(
         "--github-token",
         help="GitHub token to use for API requests (or set GH_TOKEN or GITHUB_TOKEN environment variable)",
     ),
+    local_templates: bool = typer.Option(
+        False,
+        "--local",
+        help="Use local templates directory instead of downloading from GitHub (for development)",
+    ),
 ):
     """
     Initialize a new Forge project from the latest template.
@@ -110,6 +116,7 @@ def init(
     This command will:
     1. Check that required tools are installed (git is optional)
     2. Let you choose your AI assistant
+    3. Download the appropriate template from GitHub (or use local templates with --local)
     3. Download the appropriate template from GitHub
     4. Extract the template to a new project directory or current directory
     5. Initialize a fresh git repository (if not --no-git and no existing repo)
@@ -127,6 +134,7 @@ def init(
         forge init --here --ai codebuddy
         forge init --here
         forge init --here --force  # Skip confirmation when current directory not empty
+        forge init my-project --local  # Use local templates (for dev)
     """
 
     show_banner()
@@ -268,6 +276,19 @@ def init(
     tracker.complete("ai-select", f"{selected_ai}")
     tracker.add("script-select", "Select script type")
     tracker.complete("script-select", selected_script)
+
+    if local_templates:
+        tracker.add("copy-local", "Copy local template")
+    else:
+        tracker.add("fetch", "Fetch latest release")
+        tracker.add("download", "Download template")
+        tracker.add("extract", "Extract template")
+        tracker.add("zip-list", "Archive contents")
+        tracker.add("extracted-summary", "Extraction summary")
+        tracker.add("cleanup", "Cleanup")
+
+    for key, label in [
+        ("chmod", "Ensure scripts executable"),
     for key, label in [
         ("fetch", "Fetch latest release"),
         ("download", "Download template"),
@@ -289,6 +310,31 @@ def init(
     ) as live:
         tracker.attach_refresh(lambda: live.update(tracker.render()))
         try:
+            if local_templates:
+                copy_local_template(
+                    project_path,
+                    selected_ai,
+                    selected_script,
+                    here,
+                    tracker=tracker,
+                    debug=debug,
+                )
+            else:
+                verify = not skip_tls
+                local_ssl_context = ssl_context if verify else False
+                local_client = httpx.Client(verify=local_ssl_context)
+
+                download_and_extract_template(
+                    project_path,
+                    selected_ai,
+                    selected_script,
+                    here,
+                    verbose=False,
+                    tracker=tracker,
+                    client=local_client,
+                    debug=debug,
+                    github_token=github_token,
+                )
             verify = not skip_tls
             local_ssl_context = ssl_context if verify else False
             local_client = httpx.Client(verify=local_ssl_context)
