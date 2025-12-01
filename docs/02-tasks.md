@@ -18,6 +18,10 @@
 - [ ] Add unit tests for argument parsing.
 
 ## Priority 2: Templates & Agent Integration
+- [x] Create `forge rules` module (Analysis & Implementation).
+  - [x] Analyze external rule repos (`docs/00-analysis-rules-integration.md`).
+  - [x] Create `templates/rules/` directory structure.
+  - [x] Implement `src/forge/rules.py` compiler.
 - [ ] Update all markdown templates in `templates/` to use "FORGE" terminology.
 - [ ] Verify slash commands format (`/forge.*`).
 - [ ] Update shell scripts (`scripts/`) to reflect new paths.
