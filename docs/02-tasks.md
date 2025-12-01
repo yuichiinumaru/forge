@@ -12,10 +12,10 @@
 - [ ] Create `docs/06-rules.md`.
 
 ## Priority 1: Core CLI Refactoring
-- [ ] Rename package from `specify_cli` to `forge` in `pyproject.toml` and source.
-- [ ] Modularize `src/forge/__init__.py` into `cli.py`, `config.py`, `utils.py`.
-- [ ] Implement `forge init --local` to use local `templates/` folder (enables self-hosting dev).
-- [ ] Add unit tests for argument parsing.
+- [x] Rename package from `specify_cli` to `forge` in `pyproject.toml` and source.
+- [x] Modularize `src/forge/__init__.py` into `cli.py`, `config.py`, `utils.py`.
+- [x] Implement `forge init --local` to use local `templates/` folder (enables self-hosting dev).
+- [x] Add unit tests for argument parsing.
 
 ## Priority 2: Templates & Agent Integration
 - [x] Create `forge rules` module (Analysis & Implementation).
