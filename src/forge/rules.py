@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from typing import List, Optional
 import typer
+from forge.state import load_state
+from forge.compiler.markdown import process_template
 
 app = typer.Typer()
 
@@ -78,6 +80,10 @@ def compile(
 
     content = []
 
+    # 0. Phase Context (from state.json)
+    state = load_state()
+    content.append(f"<!-- Context: Phase={state.phase.value}, Status={state.status.value} -->")
+
     # 1. Role / Persona
     content.append(load_rule_block("roles", role))
 
@@ -92,6 +98,17 @@ def compile(
 
     # Write output
     final_output = "\n\n".join([c for c in content if c.strip()])
+
+    # Process embeds (allow blocks to reference other blocks)
+    rules_dir = get_rules_dir()
+    search_paths = [rules_dir]
+    # Add subdirectories to search paths
+    for item in rules_dir.iterdir():
+        if item.is_dir():
+            search_paths.append(item)
+
+    final_output = process_template(final_output, search_paths)
+
     output.write_text(final_output)
     print(f"Generated {output}")
 
