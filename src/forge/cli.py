@@ -6,6 +6,7 @@ from forge.utils import console, show_banner
 from forge.rules import app as rules_app
 from forge.commands.init import init_command
 from forge.commands.check import check_command
+from forge.commands.workflow import plan, tasks, implement, optimize
 
 app = typer.Typer(
     name="forge",
@@ -32,6 +33,10 @@ def callback(ctx: typer.Context):
 
 app.command(name="init")(init_command)
 app.command(name="check")(check_command)
+app.command(name="plan")(plan)
+app.command(name="tasks")(tasks)
+app.command(name="implement")(implement)
+app.command(name="optimize")(optimize)
 
 def main():
     app()

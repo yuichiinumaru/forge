@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from typing import List, Optional
 import typer
+from forge.state import load_state
 
 app = typer.Typer()
 
@@ -77,6 +78,10 @@ def compile(
     print(f"Detected tags: {tags}")
 
     content = []
+
+    # 0. Phase Context (from state.json)
+    state = load_state()
+    content.append(f"<!-- Context: Phase={state.phase.value}, Status={state.status.value} -->")
 
     # 1. Role / Persona
     content.append(load_rule_block("roles", role))

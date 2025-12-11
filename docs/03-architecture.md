@@ -16,8 +16,13 @@
 │       ├── cli.py            # Typer CLI definition
 │       ├── config.py         # Configuration & Constants
 │       ├── downloader.py     # Template acquisition
-│       └── utils.py          # Helper functions
+│       ├── models.py         # Data models (State, Task)
+│       ├── state.py          # State management logic
+│       ├── utils.py          # Helper functions
+│       └── commands/         # Command implementations
+│           ├── workflow.py   # plan, tasks, implement, optimize
 ├── templates/                # SDD Templates & Agent Prompts (Domain: Content)
+│   ├── agents/               # AI Agent Personas (plan, implement, etc.)
 │   ├── commands/             # Slash command templates (e.g., forge.plan.md)
 │   ├── rules/                # Rule templates for .cursorrules
 │   └── ...                   # Other templates

@@ -16,6 +16,7 @@ from forge.utils import (
     is_git_repo, init_git_repo, ensure_executable_scripts
 )
 from forge.downloader import download_and_extract_template, copy_local_template
+from forge.state import save_state, FeatureState
 
 # Initialize SSL/Client
 ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -249,6 +250,8 @@ def init_command(
 
     for key, label in [
         ("chmod", "Ensure scripts executable"),
+        ("state", "Initialize workflow state"),
+        ("agents", "Copy agent templates"),
         ("git", "Initialize git repository"),
         ("final", "Finalize"),
     ]:
@@ -289,6 +292,44 @@ def init_command(
                 )
 
             ensure_executable_scripts(project_path, tracker=tracker)
+
+            # Initialize State
+            tracker.start("state")
+            try:
+                # Temporarily change CWD to project_path to save state
+                original_cwd_state = Path.cwd()
+                os.chdir(project_path)
+                save_state(FeatureState(name=project_name or project_path.name or "Project"))
+                os.chdir(original_cwd_state)
+                tracker.complete("state")
+            except Exception as e:
+                tracker.error("state", str(e))
+
+            # Copy Agent Templates
+            tracker.start("agents")
+            try:
+                # Attempt to find templates in source (for dev)
+                # Walk up from this file: src/forge/commands/init.py -> src/forge/commands -> src/forge -> src -> root
+                repo_root = Path(__file__).parent.parent.parent.parent
+                src_agents = repo_root / "templates" / "agents"
+
+                if src_agents.exists():
+                    dst_agents = project_path / ".forge" / "templates" / "agents"
+                    dst_agents.mkdir(parents=True, exist_ok=True)
+                    copied_count = 0
+                    for item in src_agents.glob("*.md"):
+                        shutil.copy2(item, dst_agents)
+                        copied_count += 1
+                    tracker.complete("agents", f"copied {copied_count} templates")
+                else:
+                    # Fallback: Check if they were already copied by download/local copy
+                    dst_agents = project_path / ".forge" / "templates" / "agents"
+                    if dst_agents.exists() and list(dst_agents.glob("*.md")):
+                         tracker.complete("agents", "already present")
+                    else:
+                         tracker.skip("agents", "source not found")
+            except Exception as e:
+                tracker.error("agents", str(e))
 
             if not no_git:
                 tracker.start("git")
