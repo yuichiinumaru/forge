@@ -1,26 +1,59 @@
 import typer
 from pathlib import Path
 from datetime import datetime
+from typing import List
 from rich.markdown import Markdown
 from forge.state import update_phase, load_state, Phase, save_state
 from forge.utils import console
+from forge.compiler.markdown import process_template
 
 workflow_app = typer.Typer(help="Workflow management commands")
 
+def get_search_paths() -> List[Path]:
+    """Get search paths for template resolution."""
+    paths = []
+
+    # Priority 1: .forge/templates (User Customizations)
+    base_local = Path.cwd() / ".forge" / "templates"
+    paths.extend([
+        base_local / "blocks",
+        base_local / "instructions",
+        base_local / "personas",
+        base_local / "agents",
+        base_local / "workflows",
+    ])
+
+    # Priority 2: Repo root templates (Dev environment)
+    base_repo = Path.cwd() / "templates"
+    paths.extend([
+        base_repo / "blocks",
+        base_repo / "instructions",
+        base_repo / "personas",
+        base_repo / "agents",
+        base_repo / "workflows",
+    ])
+
+    # Filter only existing paths
+    return [p for p in paths if p.exists()]
+
 def load_agent_template(agent_name: str) -> str:
-    """Load agent template from .forge/templates/agents or fallback to package templates."""
+    """Load agent template and resolve wikilinks/embeds."""
+    content = ""
+
     # Priority 1: User customized template in .forge/templates/agents
     local_template = Path.cwd() / ".forge" / "templates" / "agents" / f"{agent_name}.md"
     if local_template.exists():
-        return local_template.read_text(encoding="utf-8")
+        content = local_template.read_text(encoding="utf-8")
+    else:
+        # Priority 2: Dev environment (repo root)
+        repo_template = Path.cwd() / "templates" / "agents" / f"{agent_name}.md"
+        if repo_template.exists():
+            content = repo_template.read_text(encoding="utf-8")
+        else:
+            return f"Error: Template for agent '{agent_name}' not found."
 
-    # Priority 2: Dev environment (repo root)
-    repo_template = Path.cwd() / "templates" / "agents" / f"{agent_name}.md"
-    if repo_template.exists():
-        return repo_template.read_text(encoding="utf-8")
-
-    # Priority 3: TODO - handle installed package case (using importlib.resources)
-    return f"Error: Template for agent '{agent_name}' not found."
+    # Process template
+    return process_template(content, get_search_paths())
 
 @workflow_app.command("plan")
 def plan(feature: str = typer.Argument(None, help="Feature name or slug")):

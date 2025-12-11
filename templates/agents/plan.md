@@ -494,44 +494,13 @@ Auto-proceed to /tasks
 </mental_model>
 
 <anti_hallucination_rules>
-**CRITICAL**: Follow these rules to prevent invented architecture:
-
-1. **Never speculate** about existing patterns you haven't read
-
-   - ❌ BAD: "The app probably follows a services pattern"
-   - ✅ GOOD: "Let me search for existing service files"
-
-2. **Cite existing code** when recommending reuse
-
-   - Example: "Use UserService at api/app/services/user.py:20-45"
-
-3. **Admit when exploration needed**
-
-   - "I need to read package.json and search for imports"
-
-4. **Quote spec.md exactly** - don't paraphrase requirements
-
-5. **Verify dependencies exist** before recommending
-   - Check package.json before suggesting libraries
-
-**Why**: Hallucinated architecture leads to 40-50% implementation rework.
+![[anti-hallucination]]
 
 See `.claude/skills/planning-phase/reference.md` for full details.
 </anti_hallucination_rules>
 
 <constitution_check>
-**8 Core Standards** (validate plan against these):
-
-1. **Code Reuse First** - Search before creating, cite existing patterns
-2. **Test-Driven Development** - Tests before implementation
-3. **API Contract Stability** - Versioning, backward compatibility
-4. **Security by Default** - Input validation, auth required, OWASP compliance
-5. **Accessibility First** - WCAG 2.2 AA minimum
-6. **Performance Budgets** - Explicit targets (p95/p99 latency, bundle size)
-7. **Observability** - Structured logging, metrics, tracing
-8. **Deployment Safety** - Blue-green, rollback capability, health checks
-
-**Auto-remediation**: If standard missing, add boilerplate section to plan.md with TODO.
+![[constitution]]
 
 See `.claude/skills/planning-phase/reference.md` for implementation details.
 </constitution_check>
