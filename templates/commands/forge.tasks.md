@@ -126,7 +126,11 @@ Every task MUST strictly follow this format:
 - **Phase 1**: Setup (project initialization)
 - **Phase 2**: Foundational (blocking prerequisites - MUST complete before user stories)
 - **Phase 3+**: User Stories in priority order (P1, P2, P3...)
-  - Within each story: Tests (if requested) → Models → Services → Endpoints → Integration
+  - "For UI User Stories, you **MUST** break down tasks by dependency level to maximize parallelism:"
+    - **Phase 2.1: Primitives (Atoms)** - *Independent, parallelizable.*
+    - **Phase 2.2: Composites (Molecules)** - *Depends on Atoms.*
+    - **Phase 2.3: Features (Organisms)** - *Connects logic.*
+  - For Backend/Other: Tests (if requested) → Models → Services → Endpoints → Integration
   - Each phase should be a complete, independently testable increment
 - **Final Phase**: Polish & Cross-Cutting Concerns
 
