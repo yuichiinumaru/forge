@@ -80,6 +80,21 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 **Output**: data-model.md, /contracts/*, quickstart.md, agent-specific file
 
+## Project Structure
+
+If the project is detected as Frontend (React, Vue, Swift, etc.), you **MUST** propose the following directory structure:
+
+```text
+src/
+  components/
+    atoms/      # Primitives (Button, Input)
+    molecules/  # Composites (SearchBar)
+    organisms/  # Business Blocks (UserList)
+    templates/  # Layouts
+  pages/
+  hooks/
+```
+
 ## Key rules
 
 - Use absolute paths

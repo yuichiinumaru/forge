@@ -13,7 +13,7 @@ This repository contains the source code for the **Forge CLI** (formerly "Specif
 
 ## 3. Governance & Laws
 
-### The 9 Immutable Articles
+### The 10 Immutable Articles
 1. **Library-First**: Every feature must begin as a standalone library/module.
 2. **CLI Interface**: Every library must be usable via CLI/API.
 3. **Test-First (TDD)**: No implementation without a failing test (Red -> Green -> Refactor).
@@ -23,6 +23,7 @@ This repository contains the source code for the **Forge CLI** (formerly "Specif
 7. **Domain Isolation (DDD)**: Respect domain boundaries defined in `docs/03-architecture.md`.
 8. **Task Atomicity**: Work on one task from `docs/02-tasks.md` at a time.
 9. **Institutional Memory**: Log significant architectural decisions and mistakes in `docs/04-changelog.md`.
+10. **Atomic UI**: All Frontend/Mobile implementations MUST follow the Atomic Design strictures defined in `templates/rules/patterns/atomic-design.md`. UI components must be decoupled to allow parallel agent execution.
 
 ## 4. Methodology: FORGE v2
 This project follows the **FORGE v2** methodology:
