@@ -78,16 +78,11 @@ The wisdom of the project is stored in the `docs/` archives.
 
 ## 🤖 Cybernetics Core (Supported Agents)
 
-FORGE supports a vast array of AI constructs.
-
 | Agent Templar | Compatibility | Status |
 | :--- | :--- | :--- |
 | **Claude Code** | Full | ✅ Active |
-| **Cursor** | Full | ✅ Active |
-| **Windsurf** | Full | ✅ Active |
 | **Gemini CLI** | Full | ✅ Active |
 | **Qwen Code** | Full | ✅ Active |
-| **GitHub Copilot**| Partial | ⚠️ Restricted |
 
 ## ⚖️ Governance
 
