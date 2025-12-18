@@ -1,5 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
 ## The Forge Method: A Synthesis of Agentic AI Development
 
 The **Forge Method** represents a unified framework for developing software with AI agents that combines the best practices from Spec-Driven Development (SDD), methodological rigour (TDD, BDD, DDD, FDD), and operational documentation strategies. It transforms how specifications, rules, and institutional memory guide AI-generated code at scale.
