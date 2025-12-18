@@ -67,7 +67,7 @@ Once initialized, your Agent will recognize the following High Templar commands:
 - **`/forge.implement`**: Execute the tasks using the TDD cycle.
 - **`/forge.constitution`**: Establish the project's governing laws.
 
-## 📜 The Khala (Documentation)
+## 📜 Templar Archives (Documentation)
 
 The wisdom of the project is stored in the `docs/` archives.
 
@@ -76,7 +76,7 @@ The wisdom of the project is stored in the `docs/` archives.
 - **`docs/03-architecture.md`**: The Structural Map.
 - **`docs/06-rules.md`**: The Code of Conduct.
 
-## 🤖 Templar Archives (Supported Agents)
+## 🤖 Cybernetics Core (Supported Agents)
 
 FORGE supports a vast array of AI constructs.
 
