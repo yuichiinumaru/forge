@@ -12,40 +12,39 @@
 ## 2. Strategic Roadmap
 
 ### Phase 1: Consolidation & Branding (Completed)
-- [x] Rename package and artifacts to "Forge".
-- [x] Implement core "Spec-Flow" workflow (`plan`, `tasks`, `implement`).
-- [x] Establish Constitution (`AGENTS.md`) and Rules (`06-rules.md`).
+This phase successfully transitioned the project from `specify-cli` to `forge`, establishing the new brand and the "Constitution" (`AGENTS.md`). It also introduced the "Spec-Flow" inspired workflow commands (`plan`, `tasks`, `implement`).
 
 ### Phase 2: Technical Debt & Stability (Current)
 *Focus: Adhering to CDD/TDD principles and ensuring reliability.*
 
 #### Operation "Slice the Monolith" (CDD Compliance)
-- [ ] Refactor `src/forge/utils.py` (>500 lines) into focused modules (`logging`, `git`, `fs`).
-- [ ] Refactor `src/forge/downloader.py` (>400 lines) into `fetcher` service.
-- [ ] Refactor `src/forge/commands/init.py` (>400 lines) into `scaffolding` service.
+**Why**: Several core files (`utils.py`, `downloader.py`, `init.py`) have exceeded 400 lines, violating the CDD principle of "Atomic Components". This increases cognitive load for both humans and AI agents.
+**How**: We will refactor these "God Objects" into smaller, single-purpose services (e.g., `services/fetcher.py`, `services/git.py`). This strictly enforces the <300 line limit.
 
 #### Operation "Safety Net" (TDD Compliance)
-- [ ] Implement unit tests for `src/forge/state.py` (State persistence).
-- [ ] Implement unit tests for `src/forge/rules.py` (Rule compilation).
-- [ ] Implement unit tests for `src/forge/commands/workflow.py` (Command logic).
-- [ ] Achieve >80% coverage on core modules.
+**Why**: The transition to a stateful workflow manager introduced complex logic in `state.py` and `workflow.py` without corresponding test suites.
+**How**: We will implement a comprehensive test suite targeting these new modules. The goal is to achieve >80% code coverage to prevent regressions in the core state machine.
 
 #### Operation "Local First" (DX)
-- [ ] Fix `forge init --local` structural mismatch (Critical for self-hosting).
-- [ ] Verify offline capability.
+**Why**: The `forge init --local` command is critical for enterprise adoption (self-hosting templates) but is currently broken due to structural mismatches.
+**How**: We will align the repository structure with the distribution structure to ensure that local development mirrors the production experience.
 
 ### Phase 3: Content & Compatibility Expansion
 *Focus: Broadening support for languages and environments.*
 
-- [ ] **Language Expansion**: Add rule templates for Java, C#, Go, Rust, PHP, Ruby.
-- [ ] **CI/CD Matrix**: Implement GitHub Actions runners for Windows and macOS.
-- [ ] **Waterfall Gates**: Implement strict `forge optimize` checks (linting, SAST).
-- [ ] **Agent Templates**: Tune prompts for Qwen, OpenCode, and Amazon Q.
+#### Language Expansion
+**Strategy**: Currently, `forge rules` only detects Python and JS/TS. To be a true "Universal Adapter", we must support major enterprise languages like Java, C#, Go, and Rust. We will ingest patterns from community repositories to build these rule templates.
+
+#### CI/CD Matrix
+**Strategy**: Since Forge claims cross-platform support (via Python/PowerShell), we must prove it. We will expand the GitHub Actions matrix to run tests on `windows-latest` and `macos-latest`.
+
+#### Waterfall Gates
+**Strategy**: To support regulated industries, we will implement strict "Quality Gates" in the `forge optimize` command. This will move beyond simple prompting to executing actual verification tools (SAST, Linters) before marking a feature complete.
 
 ### Phase 4: Advanced Features (Future)
-- [ ] **Plugin System**: Allow third-party templates via pip plugins.
-- [ ] **Web UI**: Optional dashboard for visualizing `state.json`.
-- [ ] **Telemetry**: Opt-in stats on agent usage.
+- **Plugin System**: To allow community extensions without bloating the core.
+- **Web UI**: To provide a visual dashboard for the `state.json` file.
+- **Telemetry**: To understand agent usage patterns (opt-in).
 
 ## 3. Technical Architecture (The "How")
 
