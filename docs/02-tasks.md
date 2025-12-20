@@ -24,6 +24,14 @@
 - [ ] **Task 2.3.2**: Implement fix for `forge init --local` to allow self-hosted development.
 - [ ] **Task 2.3.3**: Add integration test for `--local` flag.
 
+## Phase 2.5: Governance & Standardization (Priority)
+*Focus: Enforcing Atomic Design and Naming Conventions.*
+- [x] **Task 2.5.1**: Create `templates/rules/patterns/naming-conventions.md`.
+- [x] **Task 2.5.2**: Update `templates/rules/patterns/atomic-design.md` & create `templates/docs/ui-screen.md`.
+- [x] **Task 2.5.3**: Create `templates/docs/user-guide.md` & `templates/docs/dev-guide.md`.
+- [x] **Task 2.5.4**: Update `src/forge/rules.py` & `AGENTS.md` to enforce new rules.
+- [x] **Task 2.5.5**: Document Forge's CLI Design System in `docs/design-system.md`.
+
 ## Phase 3: Content & Compatibility Expansion (Next)
 
 ### Language Support

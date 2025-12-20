@@ -1,30 +1,50 @@
-# Atomic Design & Parallelism
+# Atomic Design System Rules
 
-## Hierarchy
+## Core Philosophy
+We strictly follow **Atomic Design** to decompose UIs into five hierarchical levels. This maximizes parallel development and reusability.
 
-1.  **Atoms** (No logic, purely visual)
-    -   Examples: Buttons, Inputs, Labels, Icons.
-    -   Properties: Highly reusable, no business logic, stateless (mostly).
-2.  **Molecules** (Composites, dumb)
-    -   Examples: SearchBar (Input + Button), FormField (Label + Input + Error).
-    -   Properties: Composed of atoms, no business logic, driven by props.
-3.  **Organisms** (Business logic/State)
-    -   Examples: UserList, Header, Footer, LoginForm.
-    -   Properties: Connected to state/store, contains business logic, composes molecules and atoms.
-4.  **Templates/Pages**
-    -   Examples: DashboardLayout, UserProfilePage.
-    -   Properties: Layouts, routing targets.
+## The Hierarchy
 
-## Rule of Gold
+1.  **Atoms** 🧪 (Indivisible)
+    -   *Definition*: Smallest building blocks. No business logic. Purely visual.
+    -   *Examples*: Button, Input, Label, Icon, Typography.
+    -   *Rule*: Must have strict Prop Interfaces. Must be reusable in 3+ places.
 
-**Explicit Interfaces**: Atoms and Molecules **MUST** define their Interface (Props) *before* implementation to allow parallel work.
--   This contract allows the implementation of the component to proceed in parallel with its consumption.
--   Props must be strictly typed (TypeScript interfaces, Swift protocols, PropTypes, etc.).
+2.  **Molecules** 🔗 (Simple Groups)
+    -   *Definition*: Groups of atoms functioning together. No complex business logic.
+    -   *Examples*: SearchBar (Input + Button), FormField (Label + Input + Error).
+    -   *Rule*: Combine related atoms. Single responsibility.
 
-## Parallelism Score
+3.  **Organisms** 🧬 (Complex Sections)
+    -   *Definition*: Groups of molecules/atoms forming distinct UI sections. Can have state/business logic.
+    -   *Examples*: Header, ProductList, LoginForm, Sidebar.
+    -   *Rule*: Orchestrate molecules. Handle state. Dependency Injection for data.
 
--   **Atoms**: **High**. Can be implemented by any agent immediately. No dependencies.
--   **Molecules**: **Medium**. Depends on Atoms. Interfaces allow parallel work.
--   **Organisms**: **Low**. Depends on Molecules and Business Logic. High complexity.
+4.  **Templates** 📐 (Layouts)
+    -   *Definition*: Page structures without real content.
+    -   *Examples*: DashboardLayout, AuthLayout.
+    -   *Rule*: Define grid/flex structures. No hardcoded content.
 
-To maximize parallelism, tasks should be broken down such that Atoms are cleared first, unlocking Molecules, which unlock Organisms.
+5.  **Pages** 🖼️ (Instances)
+    -   *Definition*: Templates populated with real content.
+    -   *Examples*: HomePage, UserProfile.
+    -   *Rule*: Realistic data. Integration testing.
+
+## Golden Rules for Agents
+
+1.  **Composition over Configuration**: Build complex components from simpler ones, not via 100 props.
+2.  **Single Responsibility**: One component, one job.
+3.  **Props Contracts**: Define interfaces (TypeScript/PropTypes) *before* implementation.
+4.  **Accessibility (a11y)**: Mandatory WCAG 2.1 AA compliance (ARIA, keyboard nav).
+5.  **No Logic in Atoms**: Atoms are dumb. Logic belongs in Organisms/Hooks.
+6.  **Parallelism**: Implement Atoms first, then Molecules, then Organisms.
+
+## File Structure
+```
+src/components/
+  atoms/       # Button/Button.tsx
+  molecules/   # SearchBar/SearchBar.tsx
+  organisms/   # Header/Header.tsx
+  templates/   # DashboardLayout/DashboardLayout.tsx
+  pages/       # HomePage/HomePage.tsx
+```
