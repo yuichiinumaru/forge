@@ -1,4 +1,4 @@
-# 04 Changelog: Institutional Memory
+# 02 Changelog: Institutional Memory
 
 **Status**: Append-Only
 **Purpose**: Record what changed, WHY, and what we learned.
@@ -12,6 +12,11 @@
 ```
 
 ## Log
+
+### 2024-05-23 Documentation Reorganization
+- **What**: Reorganized `docs/` folder into structured subdirectories (`01-plans`, `02-tasks`, `03-afs`, etc.). Created synthesis files (`docs/name.md`) for each category.
+- **Why**: To improve scalability and navigation of documentation as the project grows, and to strictly separate concerns (Plans vs Tasks vs Specs).
+- **Learning**: Moving files requires updating all references in `AGENTS.md` and other documentation. A "synthesis" file pattern helps maintain a high-level view while allowing granular details in subfolders.
 
 ### 2024-05-22 Documentation Refactor
 - **What**: Migrated documentation to FORGE v2 structure (`00-07` files). Created `AGENTS.md`.
