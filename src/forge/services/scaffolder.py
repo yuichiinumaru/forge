@@ -118,7 +118,6 @@ class Scaffolder:
                 # Copy Agent Templates
                 tracker.start("agents")
                 try:
-                    import sys
                     potential_roots = [
                         Path.cwd(),
                         Path(__file__).parent.parent.parent.parent,

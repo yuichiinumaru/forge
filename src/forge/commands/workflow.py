@@ -1,4 +1,5 @@
 import typer
+import subprocess
 from pathlib import Path
 from datetime import datetime
 from typing import List
@@ -6,6 +7,8 @@ from rich.markdown import Markdown
 from forge.state import update_phase, load_state, Phase, save_state
 from forge.utils import console
 from forge.compiler.markdown import process_template
+from forge.models import QualityGate
+from forge.rules import detect_stack
 
 workflow_app = typer.Typer(help="Workflow management commands")
 
@@ -55,6 +58,19 @@ def load_agent_template(agent_name: str) -> str:
     # Process template
     return process_template(content, get_search_paths())
 
+def run_gate(name: str, cmd: list[str]) -> QualityGate:
+    console.print(f"[dim]Running {name}...[/dim]")
+    try:
+        subprocess.run(cmd, check=True, capture_output=True)
+        console.print(f"[green]PASS[/green] {name}")
+        return QualityGate(name=name, passed=True, timestamp=datetime.now().isoformat())
+    except subprocess.CalledProcessError:
+        console.print(f"[red]FAIL[/red] {name}")
+        return QualityGate(name=name, passed=False, timestamp=datetime.now().isoformat())
+    except FileNotFoundError:
+        console.print(f"[yellow]SKIP[/yellow] {name} (Tool not found)")
+        return QualityGate(name=name, passed=True, timestamp=datetime.now().isoformat(), details="Skipped (Not Found)")
+
 @workflow_app.command("plan")
 def plan(feature: str = typer.Argument(None, help="Feature name or slug")):
     """
@@ -101,11 +117,33 @@ def implement():
     console.print("\n[bold green]State updated to IMPLEMENT. Copy the prompt above to your AI agent.[/bold green]")
 
 @workflow_app.command("optimize")
-def optimize():
+def optimize(skip_gates: bool = False):
     """
     Start the Optimization Phase. Runs quality gates.
     """
     console.print("[bold blue]Starting Optimization Phase[/bold blue]")
+
+    if not skip_gates:
+        console.print("Checking Quality Gates...")
+        tags = detect_stack(Path.cwd())
+        gates = []
+
+        if "languages/python" in tags:
+            gates.append(run_gate("Python Tests", ["pytest"]))
+        if "languages/go" in tags:
+            gates.append(run_gate("Go Tests", ["go", "test", "./..."]))
+        if "languages/rust" in tags:
+            gates.append(run_gate("Rust Tests", ["cargo", "test"]))
+        if "frameworks/react" in tags or "frameworks/nextjs" in tags:
+            gates.append(run_gate("JS Tests", ["npm", "test"]))
+
+        state = load_state()
+        state.quality_gates = gates
+        save_state(state)
+
+        if any(not g.passed for g in gates):
+            console.print("[red]Quality Gates Failed. Fix issues or use --skip-gates to force.[/red]")
+            raise typer.Exit(1)
 
     update_phase(Phase.OPTIMIZE)
 

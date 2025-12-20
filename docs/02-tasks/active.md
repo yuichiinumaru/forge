@@ -14,15 +14,15 @@
 
 ### Operation "Safety Net" (TDD Compliance)
 *Goal: Achieve >80% test coverage on core logic.*
-- [ ] **Task 2.2.1**: specific test suite for `src/forge/state.py` (verify persistence, corruption handling).
-- [ ] **Task 2.2.2**: specific test suite for `src/forge/rules.py` (verify tag detection, compilation).
-- [ ] **Task 2.2.3**: specific test suite for `src/forge/commands/workflow.py` (verify command flow, template loading).
+- [x] **Task 2.2.1**: specific test suite for `src/forge/state.py` (verify persistence, corruption handling).
+- [x] **Task 2.2.2**: specific test suite for `src/forge/rules.py` (verify tag detection, compilation).
+- [x] **Task 2.2.3**: specific test suite for `src/forge/commands/workflow.py` (verify command flow, template loading).
 - [x] **Task 2.2.4**: specific test suite for `src/forge/utils.py` (after refactor).
 
 ### Operation "Local First" (DX)
 - [x] **Task 2.3.1**: Debug `forge init --local`. Identify path mismatch between repo structure and deployed structure.
 - [x] **Task 2.3.2**: Implement fix for `forge init --local` to allow self-hosted development.
-- [ ] **Task 2.3.3**: Add integration test for `--local` flag.
+- [x] **Task 2.3.3**: Add integration test for `--local` flag.
 
 ## Phase 2.5: Governance & Standardization (Priority)
 *Focus: Enforcing Atomic Design and Naming Conventions.*
@@ -35,19 +35,23 @@
 ## Phase 3: Content & Compatibility Expansion (Next)
 
 ### Language Support
-- [ ] **Task 3.1.1**: Create `templates/rules/languages/java.md`.
-- [ ] **Task 3.1.2**: Create `templates/rules/languages/go.md`.
-- [ ] **Task 3.1.3**: Create `templates/rules/languages/rust.md`.
-- [ ] **Task 3.1.4**: Update `src/forge/rules.py` detection logic for new languages.
+- [x] **Task 3.1.1**: Create `templates/rules/languages/java.md`.
+- [x] **Task 3.1.2**: Create `templates/rules/languages/go.md`.
+- [x] **Task 3.1.3**: Create `templates/rules/languages/rust.md`.
+- [x] **Task 3.1.4**: Update `src/forge/rules.py` detection logic for new languages.
 
 ### CI/CD
-- [ ] **Task 3.2.1**: Add `windows-latest` runner to GitHub Actions.
-- [ ] **Task 3.2.2**: Add `macos-latest` runner to GitHub Actions.
-- [ ] **Task 3.2.3**: Create matrix testing for Python versions (3.10, 3.11, 3.12).
+- [x] **Task 3.2.1**: Add `windows-latest` runner to GitHub Actions.
+- [x] **Task 3.2.2**: Add `macos-latest` runner to GitHub Actions.
+- [x] **Task 3.2.3**: Create matrix testing for Python versions (3.10, 3.11, 3.12).
 
 ### Agent Templates
-- [ ] **Task 3.3.1**: Create/Update templates for Qwen Code.
-- [ ] **Task 3.3.2**: Create/Update templates for Amazon Q.
+- [x] **Task 3.3.1**: Create/Update templates for Qwen Code.
+- [x] **Task 3.3.2**: Create/Update templates for Amazon Q.
+
+### Waterfall Gates (New)
+- [x] **Task 3.4.1**: Implement `optimize` command quality gates (auto-run tests/linters).
+- [x] **Task 3.4.2**: Verify gates pass before marking as optimized.
 
 ## Archive (Completed)
 
