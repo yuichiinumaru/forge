@@ -8,21 +8,29 @@
 
 ### Operation "Slice the Monolith" (CDD Compliance)
 *Goal: Reduce file sizes to <300 lines.*
-- [ ] **Task 2.1.1**: Refactor `src/forge/utils.py`. Split into `logging.py`, `filesystem.py`, `shell.py`.
-- [ ] **Task 2.1.2**: Refactor `src/forge/downloader.py`. Create `services/fetcher.py`.
-- [ ] **Task 2.1.3**: Refactor `src/forge/commands/init.py`. Extract `Scaffolder` class to `services/scaffolder.py`.
+- [x] **Task 2.1.1**: Refactor `src/forge/utils.py`. Split into `logging.py`, `filesystem.py`, `shell.py`.
+- [x] **Task 2.1.2**: Refactor `src/forge/downloader.py`. Create `services/fetcher.py`.
+- [x] **Task 2.1.3**: Refactor `src/forge/commands/init.py`. Extract `Scaffolder` class to `services/scaffolder.py`.
 
 ### Operation "Safety Net" (TDD Compliance)
 *Goal: Achieve >80% test coverage on core logic.*
 - [ ] **Task 2.2.1**: specific test suite for `src/forge/state.py` (verify persistence, corruption handling).
 - [ ] **Task 2.2.2**: specific test suite for `src/forge/rules.py` (verify tag detection, compilation).
 - [ ] **Task 2.2.3**: specific test suite for `src/forge/commands/workflow.py` (verify command flow, template loading).
-- [ ] **Task 2.2.4**: specific test suite for `src/forge/utils.py` (after refactor).
+- [x] **Task 2.2.4**: specific test suite for `src/forge/utils.py` (after refactor).
 
 ### Operation "Local First" (DX)
-- [ ] **Task 2.3.1**: Debug `forge init --local`. Identify path mismatch between repo structure and deployed structure.
-- [ ] **Task 2.3.2**: Implement fix for `forge init --local` to allow self-hosted development.
+- [x] **Task 2.3.1**: Debug `forge init --local`. Identify path mismatch between repo structure and deployed structure.
+- [x] **Task 2.3.2**: Implement fix for `forge init --local` to allow self-hosted development.
 - [ ] **Task 2.3.3**: Add integration test for `--local` flag.
+
+## Phase 2.5: Governance & Standardization (Priority)
+*Focus: Enforcing Atomic Design and Naming Conventions.*
+- [x] **Task 2.5.1**: Create `templates/rules/patterns/naming-conventions.md`.
+- [x] **Task 2.5.2**: Update `templates/rules/patterns/atomic-design.md` & create `templates/docs/ui-screen.md`.
+- [x] **Task 2.5.3**: Create `templates/docs/user-guide.md` & `templates/docs/dev-guide.md`.
+- [x] **Task 2.5.4**: Update `src/forge/rules.py` & `AGENTS.md` to enforce new rules.
+- [x] **Task 2.5.5**: Document Forge's CLI Design System in `docs/design-system.md`.
 
 ## Phase 3: Content & Compatibility Expansion (Next)
 

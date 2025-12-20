@@ -2,25 +2,15 @@ import os
 import sys
 import shutil
 import shlex
-import ssl
-import httpx
 import typer
-import truststore
 from pathlib import Path
 from rich.panel import Panel
-from rich.live import Live
 
 from forge.config import AGENT_CONFIG, SCRIPT_TYPE_CHOICES
 from forge.utils import (
-    console, StepTracker, select_with_arrows, show_banner, check_tool,
-    is_git_repo, init_git_repo, ensure_executable_scripts
+    console, select_with_arrows, show_banner, check_tool
 )
-from forge.downloader import download_and_extract_template, copy_local_template
-from forge.state import save_state, FeatureState
-
-# Initialize SSL/Client
-ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-client = httpx.Client(verify=ssl_context)
+from forge.services.scaffolder import Scaffolder
 
 def init_command(
     project_name: str = typer.Argument(
@@ -74,35 +64,12 @@ def init_command(
 ):
     """
     Initialize a new Forge project from the latest template.
-
-    This command will:
-    1. Check that required tools are installed (git is optional)
-    2. Let you choose your AI assistant
-    3. Download the appropriate template from GitHub (or use local templates with --local)
-    4. Extract the template to a new project directory or current directory
-    5. Initialize a fresh git repository (if not --no-git and no existing repo)
-    6. Optionally set up AI assistant commands
-
-    Examples:
-        forge init my-project
-        forge init my-project --ai claude
-        forge init my-project --ai copilot --no-git
-        forge init --ignore-agent-tools my-project
-        forge init . --ai claude         # Initialize in current directory
-        forge init .                     # Initialize in current directory (interactive AI selection)
-        forge init --here --ai claude    # Alternative syntax for current directory
-        forge init --here --ai codex
-        forge init --here --ai codebuddy
-        forge init --here
-        forge init --here --force  # Skip confirmation when current directory not empty
-        forge init my-project --local  # Use local templates (for dev)
     """
-
     show_banner()
 
     if project_name == ".":
         here = True
-        project_name = None  # Clear project_name to use existing validation logic
+        project_name = None
 
     if here and project_name:
         console.print(
@@ -181,7 +148,6 @@ def init_command(
             raise typer.Exit(1)
         selected_ai = ai_assistant
     else:
-        # Create options dict for selection (agent_key: display_name)
         ai_choices = {key: config["name"] for key, config in AGENT_CONFIG.items()}
         selected_ai = select_with_arrows(
             ai_choices, "Choose your AI assistant:", "copilot"
@@ -227,162 +193,51 @@ def init_command(
     console.print(f"[cyan]Selected AI assistant:[/cyan] {selected_ai}")
     console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
 
-    tracker = StepTracker("Initialize Forge Project")
+    # Use Scaffolder
+    scaffolder = Scaffolder(
+        project_path=project_path,
+        project_name=project_name,
+        ai_assistant=selected_ai,
+        script_type=selected_script,
+        local_templates=local_templates,
+        no_git=no_git,
+        here=here,
+        debug=debug,
+        skip_tls=skip_tls,
+        github_token=github_token,
+    )
 
-    sys._forge_tracker_active = True
-
-    tracker.add("precheck", "Check required tools")
-    tracker.complete("precheck", "ok")
-    tracker.add("ai-select", "Select AI assistant")
-    tracker.complete("ai-select", f"{selected_ai}")
-    tracker.add("script-select", "Select script type")
-    tracker.complete("script-select", selected_script)
-
-    if local_templates:
-        tracker.add("copy-local", "Copy local template")
-    else:
-        tracker.add("fetch", "Fetch latest release")
-        tracker.add("download", "Download template")
-        tracker.add("extract", "Extract template")
-        tracker.add("zip-list", "Archive contents")
-        tracker.add("extracted-summary", "Extraction summary")
-        tracker.add("cleanup", "Cleanup")
-
-    for key, label in [
-        ("chmod", "Ensure scripts executable"),
-        ("state", "Initialize workflow state"),
-        ("agents", "Copy agent templates"),
-        ("git", "Initialize git repository"),
-        ("final", "Finalize"),
-    ]:
-        tracker.add(key, label)
-
-    # Track git error message outside Live context so it persists
-    git_error_message = None
-
-    with Live(
-        tracker.render(), console=console, refresh_per_second=8, transient=True
-    ) as live:
-        tracker.attach_refresh(lambda: live.update(tracker.render()))
-        try:
-            if local_templates:
-                copy_local_template(
-                    project_path,
-                    selected_ai,
-                    selected_script,
-                    here,
-                    tracker=tracker,
-                    debug=debug,
-                )
-            else:
-                verify = not skip_tls
-                local_ssl_context = ssl_context if verify else False
-                local_client = httpx.Client(verify=local_ssl_context)
-
-                download_and_extract_template(
-                    project_path,
-                    selected_ai,
-                    selected_script,
-                    here,
-                    verbose=False,
-                    tracker=tracker,
-                    client=local_client,
-                    debug=debug,
-                    github_token=github_token,
-                )
-
-            ensure_executable_scripts(project_path, tracker=tracker)
-
-            # Initialize State
-            tracker.start("state")
-            try:
-                # Temporarily change CWD to project_path to save state
-                original_cwd_state = Path.cwd()
-                os.chdir(project_path)
-                save_state(FeatureState(name=project_name or project_path.name or "Project"))
-                os.chdir(original_cwd_state)
-                tracker.complete("state")
-            except Exception as e:
-                tracker.error("state", str(e))
-
-            # Copy Agent Templates
-            tracker.start("agents")
-            try:
-                # Attempt to find templates in source (for dev)
-                # Walk up from this file: src/forge/commands/init.py -> src/forge/commands -> src/forge -> src -> root
-                repo_root = Path(__file__).parent.parent.parent.parent
-                src_agents = repo_root / "templates" / "agents"
-
-                if src_agents.exists():
-                    dst_agents = project_path / ".forge" / "templates" / "agents"
-                    dst_agents.mkdir(parents=True, exist_ok=True)
-                    copied_count = 0
-                    for item in src_agents.glob("*.md"):
-                        shutil.copy2(item, dst_agents)
-                        copied_count += 1
-                    tracker.complete("agents", f"copied {copied_count} templates")
-                else:
-                    # Fallback: Check if they were already copied by download/local copy
-                    dst_agents = project_path / ".forge" / "templates" / "agents"
-                    if dst_agents.exists() and list(dst_agents.glob("*.md")):
-                         tracker.complete("agents", "already present")
-                    else:
-                         tracker.skip("agents", "source not found")
-            except Exception as e:
-                tracker.error("agents", str(e))
-
-            if not no_git:
-                tracker.start("git")
-                if is_git_repo(project_path):
-                    tracker.complete("git", "existing repo detected")
-                elif should_init_git:
-                    success, error_msg = init_git_repo(project_path, quiet=True)
-                    if success:
-                        tracker.complete("git", "initialized")
-                    else:
-                        tracker.error("git", "init failed")
-                        git_error_message = error_msg
-                else:
-                    tracker.skip("git", "git not available")
-            else:
-                tracker.skip("git", "--no-git flag")
-
-            tracker.complete("final", "project ready")
-        except Exception as e:
-            tracker.error("final", str(e))
+    try:
+        success, git_error_message, tracker = scaffolder.run()
+    except Exception as e:
+        console.print(
+            Panel(
+                f"Initialization failed: {e}", title="Failure", border_style="red"
+            )
+        )
+        if debug:
+            _env_pairs = [
+                ("Python", sys.version.split()[0]),
+                ("Platform", sys.platform),
+                ("CWD", str(Path.cwd())),
+            ]
+            _label_width = max(len(k) for k, _ in _env_pairs)
+            env_lines = [
+                f"{k.ljust(_label_width)} → [bright_black]{v}[/bright_black]"
+                for k, v in _env_pairs
+            ]
             console.print(
                 Panel(
-                    f"Initialization failed: {e}", title="Failure", border_style="red"
+                    "\n".join(env_lines),
+                    title="Debug Environment",
+                    border_style="magenta",
                 )
             )
-            if debug:
-                _env_pairs = [
-                    ("Python", sys.version.split()[0]),
-                    ("Platform", sys.platform),
-                    ("CWD", str(Path.cwd())),
-                ]
-                _label_width = max(len(k) for k, _ in _env_pairs)
-                env_lines = [
-                    f"{k.ljust(_label_width)} → [bright_black]{v}[/bright_black]"
-                    for k, v in _env_pairs
-                ]
-                console.print(
-                    Panel(
-                        "\n".join(env_lines),
-                        title="Debug Environment",
-                        border_style="magenta",
-                    )
-                )
-            if not here and project_path.exists():
-                shutil.rmtree(project_path)
-            raise typer.Exit(1)
-        finally:
-            pass
+        raise typer.Exit(1)
 
     console.print(tracker.render())
     console.print("\n[bold green]Project ready.[/bold green]")
 
-    # Show git error details if initialization failed
     if git_error_message:
         console.print()
         git_error_panel = Panel(
@@ -399,7 +254,6 @@ def init_command(
         )
         console.print(git_error_panel)
 
-    # Agent folder security notice
     agent_config = AGENT_CONFIG.get(selected_ai)
     if agent_config:
         agent_folder = agent_config["folder"]
@@ -423,7 +277,6 @@ def init_command(
         steps_lines.append("1. You're already in the project directory!")
         step_num = 2
 
-    # Add Codex-specific setup step if needed
     if selected_ai == "codex":
         codex_path = project_path / ".codex"
         quoted_path = shlex.quote(str(codex_path))

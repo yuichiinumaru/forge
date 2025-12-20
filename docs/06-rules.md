@@ -3,7 +3,7 @@
 **Status**: Versioned
 **Purpose**: Coding standards, patterns, and "The 9 Articles".
 
-## 1. The 9 Immutable Articles (from Constitution)
+## 1. The 12 Immutable Articles (from Constitution)
 
 1. **Library-First**: Every feature must begin as a standalone library/module.
 2. **CLI Interface**: Every library must be usable via CLI/API.
@@ -14,6 +14,9 @@
 7. **Domain Isolation (DDD)**: Respect domain boundaries defined in `docs/03-architecture.md`.
 8. **Task Atomicity**: Work on one task from `docs/02-tasks.md` at a time.
 9. **Institutional Memory**: Log significant architectural decisions and mistakes in `docs/04-changelog.md`.
+10. **Atomic UI**: All Frontend/Mobile implementations MUST follow Atomic Design strictures.
+11. **Naming Standards**: Enforce hierarchical naming (e.g., `Domain.Entity.State`).
+12. **Cycles Language**: Strict vocabulary for documentation ("create, maintain, and update") and ideas ("document, refine, and research").
 
 ## 2. Coding Standards
 
