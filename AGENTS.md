@@ -24,6 +24,8 @@ This repository contains the source code for the **Forge CLI** (formerly "Specif
 8. **Task Atomicity**: Work on one task from `docs/02-tasks.md` at a time.
 9. **Institutional Memory**: Log significant architectural decisions and mistakes in `docs/04-changelog.md`.
 10. **Atomic UI**: All Frontend/Mobile implementations MUST follow the Atomic Design strictures defined in `templates/rules/patterns/atomic-design.md`. UI components must be decoupled to allow parallel agent execution.
+11. **Naming Standards**: Enforce hierarchical naming (e.g., `Domain.Entity.State`) as defined in `templates/rules/patterns/naming-conventions.md`.
+12. **Cycles Language**: Documentation must use "create, maintain, and update". New ideas must use "document, refine, and research". Implementation must use "following standards".
 
 ## 4. Methodology: FORGE v2
 This project follows the **FORGE v2** methodology:
