@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Tuple, Optional
 import typer
-from forge.logging import console, StepTracker
+from forge.tui import console, StepTracker
 
 def is_git_repo(path: Path = None) -> bool:
     """Check if the specified path is inside a git repository."""

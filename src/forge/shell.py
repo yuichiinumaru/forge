@@ -6,7 +6,7 @@ from typing import Optional
 import httpx
 import truststore
 from forge.config import CLAUDE_LOCAL_PATH
-from forge.logging import console, StepTracker
+from forge.tui import console, StepTracker
 
 # Initialize SSL/Client
 ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)

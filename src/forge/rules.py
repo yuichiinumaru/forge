@@ -62,6 +62,18 @@ def detect_stack(project_path: Path) -> List[str]:
         if "tailwindcss" in content:
             tags.append("frameworks/tailwind")
 
+    # Java
+    if (project_path / "pom.xml").exists() or (project_path / "build.gradle").exists() or (project_path / "build.gradle.kts").exists():
+        tags.append("languages/java")
+
+    # Go
+    if (project_path / "go.mod").exists():
+        tags.append("languages/go")
+
+    # Rust
+    if (project_path / "Cargo.toml").exists():
+        tags.append("languages/rust")
+
     return tags
 
 @app.command()
