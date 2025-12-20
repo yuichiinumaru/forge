@@ -90,6 +90,12 @@ def compile(
     # 2. Core Rules (Always included)
     content.append(load_rule_block("core", "behavior"))
     content.append(load_rule_block("core", "tdd"))
+    content.append(load_rule_block("patterns", "naming-conventions"))
+
+    # Check for UI frameworks to include Atomic Design
+    ui_frameworks = ["frameworks/react", "frameworks/nextjs", "frameworks/tailwind"]
+    if any(tag in ui_frameworks for tag in tags):
+        content.append(load_rule_block("patterns", "atomic-design"))
 
     # 3. Stack Rules
     for tag in tags:
