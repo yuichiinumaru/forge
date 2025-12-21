@@ -53,6 +53,16 @@
 - [x] **Task 3.4.1**: Implement `optimize` command quality gates (auto-run tests/linters).
 - [x] **Task 3.4.2**: Verify gates pass before marking as optimized.
 
+## Phase 4: Advanced Features (Current)
+
+### Community & Documentation
+- [x] **Task 4.1.1**: Rewrite `CONTRIBUTING.md` to reflect Forge branding.
+- [ ] **Task 4.1.2**: Audit `README.md` for outdated references.
+
+### Plugin System
+- [x] **Task 4.2.1**: Define `Plugin` interface in `src/forge/plugins/__init__.py`.
+- [ ] **Task 4.2.2**: Implement basic plugin loader logic.
+
 ## Archive (Completed)
 
 ### Phase 1: Consolidation & Branding

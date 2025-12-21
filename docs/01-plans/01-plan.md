@@ -41,10 +41,24 @@ This phase successfully transitioned the project from `specify-cli` to `forge`, 
 #### Waterfall Gates
 **Strategy**: To support regulated industries, we will implement strict "Quality Gates" in the `forge optimize` command. This will move beyond simple prompting to executing actual verification tools (SAST, Linters) before marking a feature complete.
 
-### Phase 4: Advanced Features (Future)
-- **Plugin System**: To allow community extensions without bloating the core.
-- **Web UI**: To provide a visual dashboard for the `state.json` file.
-- **Telemetry**: To understand agent usage patterns (opt-in).
+### Phase 4: Advanced Features (Current)
+*Focus: Extensibility and Developer Experience.*
+
+#### Plugin Architecture
+**Why**: To allow community extensions without bloating the core.
+**How**: Implement a simple hook-based system for adding new Agent templates, Rule sets, or CLI commands.
+
+#### Web Dashboard
+**Why**: To provide a visual interface for the `state.json` workflow status.
+**How**: A simple `fastapi` or `streamlit` dashboard reading `state.json`.
+
+#### Telemetry (Opt-in)
+**Why**: To understand agent usage patterns.
+**How**: Minimal anonymous stats.
+
+#### Community Health
+**Why**: `CONTRIBUTING.md` is outdated.
+**How**: Rewrite to align with Forge branding and V2 methodology.
 
 ## 3. Technical Architecture (The "How")
 
