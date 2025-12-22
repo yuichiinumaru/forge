@@ -7,4 +7,7 @@
 - [Active Tasks List](./02-tasks/active.md)
 
 ## Sub-Tasks
-- [Spec Flow Tasks](./02-tasks/02-tasks-spec-flow.md)
+- [Forge Workflow Tasks](./02-tasks/02-tasks-forge-workflow.md)
+
+## Archives
+- [Completed Tasks](./02-tasks/tasklist-completed.md)

@@ -74,4 +74,24 @@ This project follows the **FORGE v2** methodology:
 2. **Think & Annotate**: Write down thoughts in `docs/thoughts/` (if enabled) to track progress. Read existing thoughts to prevent regression.
 3. **Update Constitution**: Always update `AGENTS.md` with new rules as you progress. Never remove rules, only integrate/refine.
 4. **Log Changes**: Always update `docs/02-changelog.md`. Write WHAT, WHY, and HOW. Focus on preventing repeated mistakes.
-5. **Update Tasks**: Always update `docs/02-tasks.md`. Add new tasks to the top. Move completed phases to `docs/02-tasks/tasks-completed.md`.
+5. **Update Tasks**: Always update `docs/02-tasks.md`. Add new tasks to the top. Move completed phases to `docs/02-tasks/tasklist-completed.md`.
+
+## 7. Documentation & Task Governance
+
+### Size Limits & Synthesis
+- **General Docs**: `docs/xx-type.md` must not exceed **150 lines**. It must synthesize contents of `docs/xx-type/*`.
+- **Tasks File**: `docs/02-tasks.md` (or active list) must not exceed **200 lines**.
+  - If > 200 lines: Synthesize macro tasks/phases into simplified items and link to subdocs in `docs/02-tasks/`.
+  - **Never Empty**: Must always list all open tasks (or links to them).
+
+### Task Lifecycle
+- **Never Delete**: Completed tasks are moved to `docs/02-tasks/tasklist-completed.md`.
+- **Harvesting**: When researching, create new `docs/01-plans/` and `docs/02-tasks/` files.
+- **1:1 Pairing**: Every `docs/01-plans/x.md` must have a corresponding `docs/02-tasks/x.md`.
+
+### Recursive Constitution
+- **Locations**: An `AGENTS.md` file must exist in:
+  - `docs/AGENTS.md`: Explaining documentation organization.
+  - Major codebase folders (e.g., `src/forge/AGENTS.md`): Explaining code functioning.
+- **Update Rule**: The root `AGENTS.md` is the master. Updates here trigger updates to sub-AGENTS.md files.
+- **Symmetry**: Rules applying to FORGE apply to generated projects.

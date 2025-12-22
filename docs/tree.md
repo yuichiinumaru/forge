@@ -55,12 +55,13 @@
 │   │   └── toc.yml
 │   ├── 01-plans
 │   │   ├── 01-plan.md
-│   │   └── 01-plans-spec-flow.md
+│   │   └── 01-plans-forge-workflow.md
 │   ├── 01-plans.md
 │   ├── 02-changelog.md
 │   ├── 02-tasks
-│   │   ├── 02-tasks-spec-flow.md
-│   │   └── active.md
+│   │   ├── 02-tasks-forge-workflow.md
+│   │   ├── active.md
+│   │   └── tasklist-completed.md
 │   ├── 02-tasks.md
 │   ├── 03-afs
 │   │   ├── 03-architecture.md
@@ -111,35 +112,31 @@
 │       ├── setup-plan.ps1
 │       └── update-agent-context.ps1
 ├── src
-│   ├── forge
-│   │   ├── __init__.py
-│   │   ├── cli.py
-│   │   ├── commands
-│   │   │   ├── __init__.py
-│   │   │   ├── check.py
-│   │   │   ├── init.py
-│   │   │   └── workflow.py
-│   │   ├── compiler
-│   │   │   ├── __init__.py
-│   │   │   └── markdown.py
-│   │   ├── config.py
-│   │   ├── downloader.py
-│   │   ├── filesystem.py
-│   │   ├── logging.py
-│   │   ├── models.py
-│   │   ├── rules.py
-│   │   ├── services
-│   │   │   ├── fetcher.py
-│   │   │   └── scaffolder.py
-│   │   ├── shell.py
-│   │   ├── state.py
-│   │   └── utils.py
-│   └── specify_cli
+│   └── forge
 │       ├── __init__.py
+│       ├── __main__.py
+│       ├── cli.py
+│       ├── commands
+│       │   ├── __init__.py
+│       │   ├── check.py
+│       │   ├── init.py
+│       │   └── workflow.py
+│       ├── compiler
+│       │   ├── __init__.py
+│       │   └── markdown.py
 │       ├── config.py
-│       ├── github.py
-│       ├── main.py
-│       ├── ui.py
+│       ├── downloader.py
+│       ├── filesystem.py
+│       ├── models.py
+│       ├── plugins
+│       │   └── __init__.py
+│       ├── rules.py
+│       ├── services
+│       │   ├── fetcher.py
+│       │   └── scaffolder.py
+│       ├── shell.py
+│       ├── state.py
+│       ├── tui.py
 │       └── utils.py
 ├── templates
 │   ├── adr-template.md
@@ -183,7 +180,10 @@
 │   │   │   ├── behavior.md
 │   │   │   └── tdd.md
 │   │   ├── languages
-│   │   │   └── python.md
+│   │   │   ├── go.md
+│   │   │   ├── java.md
+│   │   │   ├── python.md
+│   │   │   └── rust.md
 │   │   ├── patterns
 │   │   │   ├── atomic-design.md
 │   │   │   └── naming-conventions.md
@@ -197,6 +197,10 @@
     ├── test_audit.py
     ├── test_cli.py
     ├── test_compiler.py
-    └── test_utils.py
+    ├── test_integration_local.py
+    ├── test_rules.py
+    ├── test_state.py
+    ├── test_utils.py
+    └── test_workflow.py
 
-39 directories, 161 files
+39 directories, 165 files
