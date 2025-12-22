@@ -23,8 +23,8 @@ Unlike primitive workflows where specifications are discarded, FORGE makes the *
 
 We follow the **FORGE v2** discipline. Order is power.
 
-1.  **RDD (Readme-Driven Development)**: The *Khala*. We define the "Why" and "How" in `docs/01-plan.md` before a single line of code is warped in.
-2.  **DDD (Domain-Driven Design)**: The *Pylons*. We erect rigid boundaries in `docs/03-architecture.md` to prevent structural collapse.
+1.  **RDD (Readme-Driven Development)**: The *Khala*. We define the "Why" and "How" in `docs/01-plans/01-plan.md` before a single line of code is warped in.
+2.  **DDD (Domain-Driven Design)**: The *Pylons*. We erect rigid boundaries in `docs/03-afs/03-architecture.md` to prevent structural collapse.
 3.  **TDD (Test-Driven Development)**: The *Shields*. No functionality exists without a test to prove its strength.
 4.  **CDD (Component-Driven Development)**: The *Cannons*. We build small, autonomous units of power.
 
@@ -72,9 +72,9 @@ Once initialized, your Agent will recognize the following High Templar commands:
 The wisdom of the project is stored in the `docs/` archives.
 
 - **`AGENTS.md`**: The Constitution. The supreme law.
-- **`docs/01-plan.md`**: The Strategic Vision.
-- **`docs/03-architecture.md`**: The Structural Map.
-- **`docs/06-rules.md`**: The Code of Conduct.
+- **`docs/01-plans/01-plan.md`**: The Strategic Vision.
+- **`docs/03-afs/03-architecture.md`**: The Structural Map.
+- **`docs/04-rules/06-rules.md`**: The Code of Conduct.
 
 ## 🤖 Cybernetics Core (Supported Agents)
 
@@ -86,7 +86,7 @@ The wisdom of the project is stored in the `docs/` archives.
 
 ## ⚖️ Governance
 
-This project is governed by the **Nine Articles** of the Constitution.
+This project is governed by the **Twelve Articles** of the Constitution.
 See `AGENTS.md` for the full text.
 
 **En Taro Adun, Executor.**
